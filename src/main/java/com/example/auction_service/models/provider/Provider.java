@@ -25,9 +25,7 @@ import java.util.List;
 public class Provider extends User {
 
     @OneToMany(mappedBy = "provider", fetch = FetchType.LAZY)
-    List<Auction> offerings;
-
-    String specialization;
+    List<Auction> auctionsList;
 
     public Provider(Address address,
                     String firstName,
@@ -37,10 +35,8 @@ public class Provider extends User {
                     String phoneNumber,
                     String accessToken,
                     String refreshToken,
-                    String idToken,
-                    String specialization) {
+                    String idToken) {
         super(address, firstName, lastName, birthDate, email, phoneNumber, accessToken, refreshToken, idToken);
-        this.specialization = specialization;
     }
 
 }
