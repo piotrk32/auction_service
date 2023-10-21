@@ -1,6 +1,8 @@
-package com.billennium.internsreservations.models.user;
+package com.example.auction_service.models.user;
 
 
+import com.example.auction_service.models.address.Address;
+import com.example.auction_service.models.basic.BasicEntity;
 import com.example.auction_service.models.user.enums.Status;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
