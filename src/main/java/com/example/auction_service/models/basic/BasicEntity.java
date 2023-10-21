@@ -1,4 +1,4 @@
-package com.example.auction_service.models;
+package com.example.auction_service.models.basic;
 
 import jakarta.persistence.*;
 import lombok.Getter;
