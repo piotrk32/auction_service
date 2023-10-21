@@ -1,5 +1,6 @@
 package com.example.auction_service.models.bid;
 
+import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.basic.BasicEntity;
 import com.example.auction_service.models.customer.Customer;
 import jakarta.persistence.*;
@@ -20,6 +21,12 @@ public class Bid extends BasicEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     Customer customer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auction_id", referencedColumnName = "id")
+    Auction auction;
+
+
 
 
 
