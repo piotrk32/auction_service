@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -35,13 +36,17 @@ public class Auction extends BasicEntity {
     Integer duration;
     Double price;
 
+    LocalDateTime auctionDate;
+    LocalDateTime auctionDateEnd;
+
     //TODO CURRENT BID
     Double currentBid;
 
     @Enumerated(EnumType.STRING)
     Currency currency;
 
-    public Auction(Provider provider, String auctionName, String description, Integer duration, Double price, Currency currency, Double currentBid) {
+    public Auction(Provider provider, String auctionName, String description, Integer duration, Double price, Currency currency, Double currentBid, LocalDateTime auctionDate,
+                   LocalDateTime auctionDateEnd) {
         this.provider = provider;
         this.auctionName = auctionName;
         this.description = description;
@@ -50,6 +55,8 @@ public class Auction extends BasicEntity {
         this.price = price;
         this.currency = currency;
         this.currentBid = currentBid;
+        this.auctionDate = auctionDate;
+        this.auctionDateEnd = auctionDateEnd;
     }
 
 }
