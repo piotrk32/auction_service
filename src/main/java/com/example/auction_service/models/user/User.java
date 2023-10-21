@@ -1,10 +1,7 @@
 package com.billennium.internsreservations.models.user;
 
-import com.billennium.internsreservations.models.address.Address;
-import com.billennium.internsreservations.models.basic.BasicEntity;
-import com.billennium.internsreservations.models.customer.Customer;
-import com.billennium.internsreservations.models.provider.Provider;
-import com.billennium.internsreservations.models.user.enums.Status;
+
+import com.example.auction_service.models.user.enums.Status;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
