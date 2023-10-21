@@ -1,6 +1,6 @@
 package com.example.auction_service.models.bid.enums;
 
-public enum Status {
+public enum BidStatus {
 
     ACTIVE, CANCELLED
 }

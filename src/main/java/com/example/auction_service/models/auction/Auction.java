@@ -35,10 +35,13 @@ public class Auction extends BasicEntity {
     Integer duration;
     Double price;
 
+    //TODO CURRENT BID
+    Double currentBid;
+
     @Enumerated(EnumType.STRING)
     Currency currency;
 
-    public Auction(Provider provider, String auctionName, String description, Integer duration, Double price, Currency currency) {
+    public Auction(Provider provider, String auctionName, String description, Integer duration, Double price, Currency currency, Double currentBid) {
         this.provider = provider;
         this.auctionName = auctionName;
         this.description = description;
@@ -46,6 +49,7 @@ public class Auction extends BasicEntity {
         this.duration = duration;
         this.price = price;
         this.currency = currency;
+        this.currentBid = currentBid;
     }
 
 }

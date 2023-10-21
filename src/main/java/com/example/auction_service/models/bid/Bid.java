@@ -1,7 +1,9 @@
 package com.example.auction_service.models.bid;
 
 import com.example.auction_service.models.auction.Auction;
+import com.example.auction_service.models.auction.enums.Currency;
 import com.example.auction_service.models.basic.BasicEntity;
+import com.example.auction_service.models.bid.enums.BidStatus;
 import com.example.auction_service.models.customer.Customer;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,6 +27,18 @@ public class Bid extends BasicEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id", referencedColumnName = "id")
     Auction auction;
+
+    Double bidValue;
+
+    @Enumerated(EnumType.STRING)
+    BidStatus bidStatus;
+
+    public Bid(Customer customer, Auction auction,  Double price, Currency currency, Double bidValue) {
+        this.customer = customer;
+        this.auction = auction;
+        this.bidValue = bidValue;
+        this.bidStatus = BidStatus.ACTIVE;
+    }
 
 
 
