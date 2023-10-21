@@ -2,6 +2,7 @@ package com.example.auction_service.models.auction;
 
 import com.example.auction_service.models.auction.enums.Currency;
 import com.example.auction_service.models.basic.BasicEntity;
+import com.example.auction_service.models.bid.Bid;
 import com.example.auction_service.models.provider.Provider;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,13 +11,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Entity
-@Table(name = "offerings")
+@Table(name = "auctions")
 @Setter
 @Getter
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Auction extends BasicEntity {
+
+    @OneToMany(mappedBy = "auction", fetch = FetchType.LAZY)
+    List<Bid> bidList;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "provider_id", referencedColumnName = "id")
