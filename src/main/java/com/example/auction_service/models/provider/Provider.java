@@ -1,6 +1,7 @@
 package com.example.auction_service.models.provider;
 
 import com.example.auction_service.models.address.Address;
+import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,7 +25,7 @@ import java.util.List;
 public class Provider extends User {
 
     @OneToMany(mappedBy = "provider", fetch = FetchType.LAZY)
-    List<Offering> offerings;
+    List<Auction> offerings;
 
     String specialization;
 
