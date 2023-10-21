@@ -1,8 +1,11 @@
 package com.example.auction_service.models.customer;
 
 import com.example.auction_service.models.address.Address;
+import com.example.auction_service.models.bid.Bid;
 import com.example.auction_service.models.user.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,6 +14,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
@@ -32,7 +36,7 @@ public class Customer extends User {
         super(address, firstName, lastName, birthDate, email, phoneNumber, accessToken, refreshToken, idToken);
     }
 
-//    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-//    List<Reservation> reservations;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    List<Bid> bidList;
 
 }
