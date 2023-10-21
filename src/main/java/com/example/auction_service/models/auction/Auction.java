@@ -22,7 +22,7 @@ public class Auction extends BasicEntity {
     @JoinColumn(name = "provider_id", referencedColumnName = "id")
     Provider provider;
 
-    String offeringName;
+    String auctionName;
     String description;
     Boolean isActive;
     Integer duration;
@@ -31,9 +31,9 @@ public class Auction extends BasicEntity {
     @Enumerated(EnumType.STRING)
     Currency currency;
 
-    public Auction(Provider provider, String offeringName, String description, Integer duration, Double price, Currency currency) {
+    public Auction(Provider provider, String auctionName, String description, Integer duration, Double price, Currency currency) {
         this.provider = provider;
-        this.offeringName = offeringName;
+        this.auctionName = auctionName;
         this.description = description;
         this.isActive = true;
         this.duration = duration;
