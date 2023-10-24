@@ -25,5 +25,32 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserByEmail(String email);
 
+    @Query("""
+            SELECT u.idToken
+            FROM User u
+            WHERE u.email = :email
+            """)
+    String findIdTokenByEmail(@Param("email") String email);
+
+    @Query("""
+            SELECT u.refreshToken
+            FROM User u
+            WHERE u.email = :email
+            """)
+    String findRefreshTokenByEmail(@Param("email") String email);
+
+    @Query("""
+            SELECT u.accessToken
+            FROM User u
+            WHERE u.email = :email
+            """)
+    String findAccessTokenByEmail(@Param("email") String email);
+
+    @Query("""
+            SELECT u.id
+            FROM User u
+            WHERE u.email = :email
+            """)
+    Optional<Long> getUserIdByUserEmail(@Param("email") String email);
 
 }
