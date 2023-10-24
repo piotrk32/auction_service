@@ -1,5 +1,3 @@
--- V1__init_schema_with_items.sql
-
 -- Address table
 CREATE TABLE addresses (
                            id SERIAL PRIMARY KEY,
