@@ -11,7 +11,7 @@ public interface ProviderRepository extends JpaRepository<Provider, Long> {
     @Query("""
             SELECT p
             FROM Provider p
-            WHERE p.id = (SELECT o.provider.id FROM Offering o WHERE o.id =  :offeringId)
+            WHERE p.id = (SELECT o.provider.id FROM Auction o WHERE o.id =  :offeringId)
             """)
     Optional<Provider> getProviderByOfferingId(@Param("offeringId") Long offeringId);
 
