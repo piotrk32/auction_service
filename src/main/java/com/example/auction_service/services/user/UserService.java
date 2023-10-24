@@ -23,6 +23,14 @@ public class UserService {
         return userOptional.get();
     }
 
+    public boolean userExistsByEmail(String email) {
+        return userRepository.findUserByEmail(email).isPresent();
+    }
+
+    public void deleteUserById(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
 
 
 }
