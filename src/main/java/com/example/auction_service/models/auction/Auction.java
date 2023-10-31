@@ -45,8 +45,11 @@ public class Auction extends BasicEntity {
     @Enumerated(EnumType.STRING)
     Currency currency;
 
+    Boolean isBuyNow; // czy aukcja została zakończona przez Kup Teraz
+    Double buyNowPrice; // cena Kup Teraz, jeśli jest aktywna
+
     public Auction(Provider provider, String auctionName, String description, Integer duration, Double price, Currency currency, Double currentBid, LocalDateTime auctionDate,
-                   LocalDateTime auctionDateEnd) {
+                   LocalDateTime auctionDateEnd, Boolean isBuyNow, Double buyNowPrice) {
         this.provider = provider;
         this.auctionName = auctionName;
         this.description = description;
@@ -57,6 +60,9 @@ public class Auction extends BasicEntity {
         this.currentBid = currentBid;
         this.auctionDate = auctionDate;
         this.auctionDateEnd = auctionDateEnd;
+        this.isBuyNow = isBuyNow;
+        this.buyNowPrice = buyNowPrice;
+
     }
 
 }
