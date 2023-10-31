@@ -2,6 +2,7 @@ package com.example.auction_service.services.address;
 
 import com.example.auction_service.exceptions.EntityNotFoundException;
 import com.example.auction_service.models.address.Address;
+import com.example.auction_service.models.address.dtos.AddressUpdateDTO;
 import com.example.auction_service.repositories.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

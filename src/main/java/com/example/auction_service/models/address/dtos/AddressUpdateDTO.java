@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
+import static com.example.auction_service.validators.NameValidators.NAME_REGEX;
+
 public record AddressUpdateDTO(@NotBlank(message = "Country name field must be filled in.")
                                @Length(min = 4, max = 255, message = "Country name must be between 4 and 255 characters.")
                                @Pattern(regexp = NAME_REGEX, message = "Country name must contain only letters.")
