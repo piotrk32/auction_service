@@ -4,6 +4,7 @@ import com.example.auction_service.exceptions.EntityNotFoundException;
 import com.example.auction_service.exceptions.auction.InvalidCurrencyException;
 import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.auction.dtos.AuctionInputDTO;
+import com.example.auction_service.models.auction.dtos.AuctionProviderRequestDTO;
 import com.example.auction_service.models.auction.dtos.AuctionRequestDTO;
 import com.example.auction_service.models.auction.enums.Currency;
 import com.example.auction_service.models.provider.Provider;
@@ -84,6 +85,15 @@ public class AuctionService {
         }
 
         return auctionRepository.findAll(spec, pageRequest);
+    }
+
+    public Page<Auction> getAuctionsByProviderId(Long providerId, AuctionProviderRequestDTO offeringProviderRequestDTO) {
+        PageRequest pageRequest = PageRequest.of(
+                Integer.parseInt(offeringProviderRequestDTO.getPage()),
+                Integer.parseInt(offeringProviderRequestDTO.getSize()),
+                Sort.Direction.valueOf(offeringProviderRequestDTO.getDirection()),
+                offeringProviderRequestDTO.getSortParam());
+        return auctionRepository.findAllByProviderIdAndIsActiveTrue(providerId, pageRequest);
     }
 
 
