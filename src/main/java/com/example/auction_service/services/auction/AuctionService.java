@@ -116,6 +116,11 @@ public class AuctionService {
         return auctionRepository.saveAndFlush(auction);
     }
 
+    public String getProviderEmailByAuctionId(Long auctionId) {
+        return auctionRepository.getProviderEmailByAuctionId(auctionId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer", "No Offering found with provider id: " + auctionId));
+    }
+
 
 
 }
