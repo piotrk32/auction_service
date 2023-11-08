@@ -4,10 +4,15 @@ import com.example.auction_service.exceptions.EntityNotFoundException;
 import com.example.auction_service.exceptions.auction.InvalidCurrencyException;
 import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.auction.dtos.AuctionInputDTO;
+import com.example.auction_service.models.auction.dtos.AuctionRequestDTO;
 import com.example.auction_service.models.auction.enums.Currency;
 import com.example.auction_service.models.provider.Provider;
 import com.example.auction_service.repositories.AuctionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -52,6 +57,33 @@ public class AuctionService {
         );
 
         return auctionRepository.saveAndFlush(auction);
+    }
+
+    public Page<Auction> getAuctions(AuctionRequestDTO auctionRequestDTO) {
+        PageRequest pageRequest = PageRequest.of(
+                Integer.parseInt(auctionRequestDTO.getPage()),
+                Integer.parseInt(auctionRequestDTO.getSize()),
+                Sort.Direction.valueOf(auctionRequestDTO.getDirection()),
+                auctionRequestDTO.getSortParam());
+
+        Specification<Auction> spec = Specification.where(null);
+        spec = spec.and((root, query, criteriaBuilder) ->
+                criteriaBuilder.isTrue(root.get("isActive")));
+
+        if (auctionRequestDTO.getAuctionNameSearch() != null) {
+            spec = spec.and(AuctionSpecification.auctionNameContains(auctionRequestDTO.getAuctionNameSearch()));
+        }
+        if (auctionRequestDTO.getPriceFrom() != null) {
+            spec = spec.and(AuctionSpecification.priceGreaterThanOrEqual(auctionRequestDTO.getPriceFrom()));
+        }
+        if (auctionRequestDTO.getPriceTo() != null) {
+            spec = spec.and(AuctionSpecification.priceLessThanOrEqual(auctionRequestDTO.getPriceTo()));
+        }
+        if (auctionRequestDTO.getProviderId() != null) {
+            spec = spec.and(AuctionSpecification.providerIdEquals(auctionRequestDTO.getProviderId()));
+        }
+
+        return auctionRepository.findAll(spec, pageRequest);
     }
 
 
