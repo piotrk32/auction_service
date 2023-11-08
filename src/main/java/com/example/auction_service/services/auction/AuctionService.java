@@ -95,6 +95,27 @@ public class AuctionService {
                 offeringProviderRequestDTO.getSortParam());
         return auctionRepository.findAllByProviderIdAndIsActiveTrue(providerId, pageRequest);
     }
+    public Auction updateAuctionById(Long auctionId, AuctionInputDTO auctionInputDTO) {
+        if (!Currency.isValid(String.valueOf(auctionInputDTO.currency()))) {
+            throw new InvalidCurrencyException("currency", "Invalid currency: " + auctionInputDTO.currency());
+        }
+        Auction auction = getAuctionById(auctionId);
+        auction.setAuctionName(auctionInputDTO.auctionName());
+        auction.setDescription(auctionInputDTO.description());
+        auction.setPrice(auctionInputDTO.price());
+        auction.setDuration(auctionInputDTO.duration());
+        auction.setIsActive(auctionInputDTO.isActive());
+        auction.setAuctionDate(auctionInputDTO.auctionDate());
+        auction.setAuctionDateEnd(auctionInputDTO.auctionDateEnd());
+        auction.setIsBuyNow(auctionInputDTO.isBuyNow());
+        auction.setBuyNowPrice(auctionInputDTO.buyNowPrice());
+
+        Currency currency = Currency.valueOf(String.valueOf(auctionInputDTO.currency()));
+        auction.setCurrency(currency);
+
+        return auctionRepository.saveAndFlush(auction);
+    }
+
 
 
 }

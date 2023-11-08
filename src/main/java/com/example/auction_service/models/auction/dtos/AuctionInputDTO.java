@@ -16,6 +16,7 @@ public record AuctionInputDTO(
         @Length(min = 3, message = "Auction name must be at least 3 characters.")
         String auctionName,
 
+        @NotBlank(message = "Auction description field must be filled in.")
         String description,
 
         @NotNull(message = "Duration cannot be empty.")
@@ -31,9 +32,13 @@ public record AuctionInputDTO(
 
         @NotNull(message = "Auction start date cannot be empty.")
         LocalDateTime auctionDate,
+        @NotNull(message = "Auction end date cannot be empty.")
+        LocalDateTime auctionDateEnd,
 
         Boolean isBuyNow,
 
-        Double buyNowPrice
+        Double buyNowPrice,
+
+        Boolean isActive
 ) {
 }
