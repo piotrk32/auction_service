@@ -1,6 +1,7 @@
 package com.example.auction_service.models.auction.dtos;
 
 import com.example.auction_service.validators.auctionpageparam.AuctionPageParam;
+import com.example.auction_service.validators.pagedirection.PageDirection;
 import com.example.auction_service.validators.pagesize.PageSize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
@@ -23,6 +24,6 @@ public class AuctionProviderRequestDTO {
     @AuctionPageParam
     private String sortParam = "price";
     @Schema(example = "DESC")
-
+    @PageDirection
     private String direction = "ASC";
 }
