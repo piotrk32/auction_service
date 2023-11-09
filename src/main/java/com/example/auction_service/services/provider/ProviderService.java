@@ -50,7 +50,6 @@ public class ProviderService {
 
     public Provider updateProviderById(Long providerId, ProviderInputDTO providerInputDTO) {
         Provider provider = getProviderById(providerId);
-
         provider.setFirstName(providerInputDTO.getFirstName());
         provider.setLastName(providerInputDTO.getLastName());
         provider.setBirthDate(providerInputDTO.getBirthDate());
