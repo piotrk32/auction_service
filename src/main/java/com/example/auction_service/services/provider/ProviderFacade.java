@@ -38,5 +38,10 @@ public class ProviderFacade {
         providerService.deleteProviderById(providerId);
     }
 
+    public ProviderResponseDTO updateProviderById(Long id, ProviderInputDTO providerInputDTO) {
+        Provider provider = providerService.updateProviderById(id, providerInputDTO);
+        return mapToProviderResponseDTO(provider);
+    }
+
 
 }
