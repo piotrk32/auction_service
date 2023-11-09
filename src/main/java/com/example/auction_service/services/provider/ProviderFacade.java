@@ -2,8 +2,6 @@ package com.example.auction_service.services.provider;
 
 import com.example.auction_service.exceptions.user.UserAlreadyExistsException;
 import com.example.auction_service.models.address.Address;
-import com.example.auction_service.models.customer.dtos.CustomerRequestDTO;
-import com.example.auction_service.models.customer.dtos.CustomerResponseDTO;
 import com.example.auction_service.models.provider.Provider;
 import com.example.auction_service.models.provider.dtos.ProviderInputDTO;
 import com.example.auction_service.models.provider.dtos.ProviderResponseDTO;
@@ -13,7 +11,6 @@ import com.example.auction_service.services.address.AddressService;
 import com.example.auction_service.services.customer.CustomerService;
 import com.example.auction_service.services.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import static com.example.auction_service.models.provider.dtos.ProviderMapper.mapToProviderResponseDTO;
@@ -58,9 +55,9 @@ public class ProviderFacade {
 
     //TODO CustomerService and Facade
 
-    public Page<CustomerResponseDTO> getCustomersByProviderId(Long providerId, CustomerRequestDTO customerRequestDTO) {
-        return customerService.getAllCustomersIdByProvider(providerId, customerRequestDTO).map(CustomerMapper::mapToCustomerResponseDTO);
-    }
+//    public Page<CustomerResponseDTO> getCustomersByProviderId(Long providerId, CustomerRequestDTO customerRequestDTO) {
+//        return customerService.getAllCustomersIdByProvider(providerId, customerRequestDTO).map(CustomerMapper::mapToCustomerResponseDTO);
+//    }
 
 
 
