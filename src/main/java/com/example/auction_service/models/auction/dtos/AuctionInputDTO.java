@@ -29,6 +29,8 @@ public record AuctionInputDTO(
 
         @NotNull(message = "Currency cannot be empty.")
         Currency currency,
+        @NotNull(message = "Category cannot be empty.")
+        String category,
 
         @NotNull(message = "Auction start date cannot be empty.")
         LocalDateTime auctionDate,

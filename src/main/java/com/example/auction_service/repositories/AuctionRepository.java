@@ -17,7 +17,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, JpaSpec
         FROM Auction o
         WHERE o.id = :offeringId
         """)
-    Optional<String> getProviderEmailByAuctionId(@Param("offeringId") Long offeringId);
+    Optional<String> getProviderEmailByAuctionId(@Param("auctionId") Long offeringId);
 
 
     Page<Auction> findAllByProviderIdAndIsActiveTrue(Long providerId, PageRequest pageRequest);

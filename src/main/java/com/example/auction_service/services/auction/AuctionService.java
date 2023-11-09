@@ -7,6 +7,7 @@ import com.example.auction_service.models.auction.dtos.AuctionInputDTO;
 import com.example.auction_service.models.auction.dtos.AuctionProviderRequestDTO;
 import com.example.auction_service.models.auction.dtos.AuctionRequestDTO;
 import com.example.auction_service.models.auction.enums.Currency;
+import com.example.auction_service.models.auction.enums.StatusAuction;
 import com.example.auction_service.models.provider.Provider;
 import com.example.auction_service.repositories.AuctionRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,9 +47,11 @@ public class AuctionService {
         Auction auction = new Auction(
                 provider,
                 auctionInputDTO.auctionName(),
+                auctionInputDTO.category(),
                 auctionInputDTO.description(),
                 auctionInputDTO.duration(),
                 auctionInputDTO.price(),
+                auctionInputDTO.category()
                 currency,
                 auctionInputDTO.price(), // Assuming the initial current bid is the starting price
                 auctionInputDTO.auctionDate(),
@@ -83,6 +86,9 @@ public class AuctionService {
         if (auctionRequestDTO.getProviderId() != null) {
             spec = spec.and(AuctionSpecification.providerIdEquals(auctionRequestDTO.getProviderId()));
         }
+        if (auctionRequestDTO.getAuctionCategorySearch() != null) {
+            spec = spec.and(AuctionSpecification.auctionNameContains(auctionRequestDTO.getAuctionCategorySearch()));
+        }
 
         return auctionRepository.findAll(spec, pageRequest);
     }
@@ -109,9 +115,12 @@ public class AuctionService {
         auction.setAuctionDateEnd(auctionInputDTO.auctionDateEnd());
         auction.setIsBuyNow(auctionInputDTO.isBuyNow());
         auction.setBuyNowPrice(auctionInputDTO.buyNowPrice());
+        auction.setCategory(auctionInputDTO.category());
 
         Currency currency = Currency.valueOf(String.valueOf(auctionInputDTO.currency()));
         auction.setCurrency(currency);
+
+        auction.setStatusAuction(StatusAuction.NOT_STARTED);
 
         return auctionRepository.saveAndFlush(auction);
     }
@@ -119,6 +128,28 @@ public class AuctionService {
     public String getProviderEmailByAuctionId(Long auctionId) {
         return auctionRepository.getProviderEmailByAuctionId(auctionId)
                 .orElseThrow(() -> new EntityNotFoundException("Customer", "No Offering found with provider id: " + auctionId));
+    }
+
+    public Auction activateAuction(Long auctionId) {
+        Auction auction = getAuctionById(auctionId);
+        if (auction != null) {
+            auction.setStatusAuction(StatusAuction.ACTIVE);
+            return auctionRepository.save(auction);
+        } else {
+            // Handle the case where the auction doesn't exist
+            throw new EntityNotFoundException("Auction ", "Auction not found with id: " + auctionId);
+        }
+    }
+
+    public Auction deactivateAuction(Long auctionId) {
+        Auction auction = getAuctionById(auctionId);
+        if (auction != null) {
+            auction.setStatusAuction(StatusAuction.CANCELED);
+            return auctionRepository.save(auction);
+        } else {
+            // Handle the case where the auction doesn't exist
+            throw new EntityNotFoundException("Auction ", "Auction not found with id: " + auctionId);
+        }
     }
 
 

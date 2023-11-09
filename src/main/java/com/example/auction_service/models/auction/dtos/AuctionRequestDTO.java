@@ -31,6 +31,10 @@ public class AuctionRequestDTO {
     @Length(min = 3, message = "Auction name search must be at least 3 characters long.")
     private String auctionNameSearch = null;
 
+    @Schema(example = "Cars")
+    @Length(min = 3, message = "Auction category search must be at least 3 characters long.")
+    private String auctionCategorySearch = null;
+
     @Schema(example = "100")
     @Min(value = 0, message = "Minimum price must not be less than zero.")
     private String priceFrom = null;

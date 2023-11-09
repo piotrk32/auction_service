@@ -13,6 +13,10 @@ public class AuctionSpecification {
         return (root, query, cb) -> auctionName == null ? null :
                 cb.like(cb.lower(root.get("auctionName")), "%" + auctionName.toLowerCase() + "%");
     }
+    public static Specification<Auction> auctionCategoryContains(String auctionCategory) {
+        return (root, query, cb) -> auctionCategory == null ? null :
+                cb.like(cb.lower(root.get("auctionCategory")), "%" + auctionCategory.toLowerCase() + "%");
+    }
 
     public static Specification<Auction> priceGreaterThanOrEqual(String price) {
         return (root, query, cb) -> price == null ? null : cb.greaterThanOrEqualTo(root.get("price"),
