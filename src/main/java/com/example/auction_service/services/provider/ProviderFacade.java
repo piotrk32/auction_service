@@ -43,5 +43,9 @@ public class ProviderFacade {
         return mapToProviderResponseDTO(provider);
     }
 
+    public ProviderResponseDTO getProviderById(Long providerId) {
+        return mapToProviderResponseDTO(providerService.getProviderById(providerId));
+    }
+
 
 }
