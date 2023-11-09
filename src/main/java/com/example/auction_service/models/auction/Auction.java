@@ -1,6 +1,7 @@
 package com.example.auction_service.models.auction;
 
 import com.example.auction_service.models.auction.enums.Currency;
+import com.example.auction_service.models.auction.enums.StatusAuction;
 import com.example.auction_service.models.basic.BasicEntity;
 import com.example.auction_service.models.bid.Bid;
 import com.example.auction_service.models.provider.Provider;
@@ -35,6 +36,7 @@ public class Auction extends BasicEntity {
     Boolean isActive;
     Integer duration;
     Double price;
+    String category;
 
     LocalDateTime auctionDate;
     LocalDateTime auctionDateEnd;
@@ -45,13 +47,20 @@ public class Auction extends BasicEntity {
     @Enumerated(EnumType.STRING)
     Currency currency;
 
+    @Enumerated(EnumType.STRING)
+    StatusAuction statusAuction;
+
     Boolean isBuyNow; // czy aukcja została zakończona przez Kup Teraz
     Double buyNowPrice; // cena Kup Teraz, jeśli jest aktywna
 
-    public Auction(Provider provider, String auctionName, String description, Integer duration, Double price, Currency currency, Double currentBid, LocalDateTime auctionDate,
+
+
+    public Auction(Provider provider, String auctionName, String category, String description, Integer duration,
+                   Double price, Currency currency, Double currentBid, LocalDateTime auctionDate,
                    LocalDateTime auctionDateEnd, Boolean isBuyNow, Double buyNowPrice) {
         this.provider = provider;
         this.auctionName = auctionName;
+        this.category = category;
         this.description = description;
         this.isActive = true;
         this.duration = duration;
