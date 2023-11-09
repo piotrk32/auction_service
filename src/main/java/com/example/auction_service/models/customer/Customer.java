@@ -36,6 +36,8 @@ public class Customer extends User {
         super(address, firstName, lastName, birthDate, email, phoneNumber, accessToken, refreshToken, idToken);
     }
 
+    //TODO connection with items bought in auction
+
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     List<Bid> bidList;
 
