@@ -51,9 +51,8 @@ public class AuctionService {
                 auctionInputDTO.description(),
                 auctionInputDTO.duration(),
                 auctionInputDTO.price(),
-                auctionInputDTO.category()
                 currency,
-                auctionInputDTO.price(), // Assuming the initial current bid is the starting price
+                auctionInputDTO.price(), // Assuming the initial current bid is the same as the starting price
                 auctionInputDTO.auctionDate(),
                 auctionEndDate,
                 auctionInputDTO.isBuyNow(),
