@@ -15,9 +15,9 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, JpaSpec
     @Query("""
         SELECT o.provider.email
         FROM Auction o
-        WHERE o.id = :offeringId
+        WHERE o.id = :auctionId
         """)
-    Optional<String> getProviderEmailByAuctionId(@Param("auctionId") Long offeringId);
+    Optional<String> getProviderEmailByAuctionId(@Param("auctionId") Long auctionId);
 
 
     Page<Auction> findAllByProviderIdAndIsActiveTrue(Long providerId, PageRequest pageRequest);

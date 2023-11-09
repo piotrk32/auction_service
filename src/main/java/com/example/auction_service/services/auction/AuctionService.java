@@ -93,12 +93,12 @@ public class AuctionService {
         return auctionRepository.findAll(spec, pageRequest);
     }
 
-    public Page<Auction> getAuctionsByProviderId(Long providerId, AuctionProviderRequestDTO offeringProviderRequestDTO) {
+    public Page<Auction> getAuctionsByProviderId(Long providerId, AuctionProviderRequestDTO auctionProviderRequestDTO) {
         PageRequest pageRequest = PageRequest.of(
-                Integer.parseInt(offeringProviderRequestDTO.getPage()),
-                Integer.parseInt(offeringProviderRequestDTO.getSize()),
-                Sort.Direction.valueOf(offeringProviderRequestDTO.getDirection()),
-                offeringProviderRequestDTO.getSortParam());
+                Integer.parseInt(auctionProviderRequestDTO.getPage()),
+                Integer.parseInt(auctionProviderRequestDTO.getSize()),
+                Sort.Direction.valueOf(auctionProviderRequestDTO.getDirection()),
+                auctionProviderRequestDTO.getSortParam());
         return auctionRepository.findAllByProviderIdAndIsActiveTrue(providerId, pageRequest);
     }
     public Auction updateAuctionById(Long auctionId, AuctionInputDTO auctionInputDTO) {
@@ -127,7 +127,7 @@ public class AuctionService {
 
     public String getProviderEmailByAuctionId(Long auctionId) {
         return auctionRepository.getProviderEmailByAuctionId(auctionId)
-                .orElseThrow(() -> new EntityNotFoundException("Customer", "No Offering found with provider id: " + auctionId));
+                .orElseThrow(() -> new EntityNotFoundException("Customer", "No Auction found with provider id: " + auctionId));
     }
 
     public Auction activateAuction(Long auctionId) {

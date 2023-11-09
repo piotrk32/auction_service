@@ -5,8 +5,8 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class AuctionPageParamValidator implements ConstraintValidator<AuctionPageParam, String> {
 
-    private static final String[] ALLOWED_VALUES = {"id", "createdAt", "modifiedAt", "provider", "offeringName",
-            "description", "isActive", "duration", "price", "currency"};
+    private static final String[] ALLOWED_VALUES = {"id", "createdAt", "modifiedAt", "provider", "auctionName",
+            "description", "isActive", "duration", "price", "currency, category, auctionDate, auctionDateEnd, isBuyNow, buyNowPrice"};
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

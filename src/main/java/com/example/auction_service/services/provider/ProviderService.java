@@ -22,9 +22,9 @@ public class ProviderService {
         return providerRepository.findById(providerId)
                 .orElseThrow(() -> new EntityNotFoundException("Provider", "No provider found with id: " + providerId));
     }
-    public Provider getProviderByOfferingId(Long offeringId) {
-        return providerRepository.getProviderByOfferingId(offeringId)
-                .orElseThrow(() -> new EntityNotFoundException("Provider", "No provider found with offering id: " + offeringId));
+    public Provider getProviderByAuctionId(Long auctionId) {
+        return providerRepository.getProviderByAuctionId(auctionId)
+                .orElseThrow(() -> new EntityNotFoundException("Provider", "No provider found with auction id: " + auctionId));
     }
 
     public Provider createProvider(Address address, ProviderInputDTO providerInputDTO, User user) {
