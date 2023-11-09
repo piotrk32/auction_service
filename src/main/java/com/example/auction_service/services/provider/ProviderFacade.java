@@ -1,5 +1,6 @@
 package com.example.auction_service.services.provider;
 
+import com.example.auction_service.exceptions.user.UserAlreadyExistsException;
 import com.example.auction_service.models.address.Address;
 import com.example.auction_service.models.provider.Provider;
 import com.example.auction_service.models.provider.dtos.ProviderInputDTO;
@@ -31,6 +32,10 @@ public class ProviderFacade {
             return mapToProviderResponseDTO(provider);
         }
         throw new UserAlreadyExistsException("email", "User with this email already exists.");
+    }
+
+    public void deleteProviderById(Long providerId) {
+        providerService.deleteProviderById(providerId);
     }
 
 
