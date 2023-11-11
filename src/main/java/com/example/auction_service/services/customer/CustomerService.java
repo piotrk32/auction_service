@@ -44,6 +44,16 @@ public class CustomerService {
         customerRepository.saveAndFlush(customer);
     }
 
+    public Customer updateCustomerById(Long customerId, CustomerInputDTO customerInputDTO) {
+        Customer customer = getCustomerById(customerId);
+        customer.setFirstName(customerInputDTO.getFirstName());
+        customer.setLastName(customerInputDTO.getLastName());
+        customer.setBirthDate(customerInputDTO.getBirthDate());
+        customer.setPhoneNumber(customerInputDTO.getPhoneNumber());
+
+        return customerRepository.saveAndFlush(customer);
+    }
+
 
 
 
