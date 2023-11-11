@@ -3,6 +3,7 @@ package com.example.auction_service.repositories;
 import com.example.auction_service.models.auction.Auction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, JpaSpec
 
 
     Page<Auction> findAllByProviderIdAndIsActiveTrue(Long providerId, PageRequest pageRequest);
+
+    @Query("SELECT DISTINCT a FROM Auction a JOIN a.bidList b WHERE b.customer.id = :customerId")
+    Page<Auction> findAllByCustomerIdWithBids(@Param("customerId") Long customerId, Pageable pageable);
+
 }
