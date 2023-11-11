@@ -2,16 +2,22 @@ package com.example.auction_service.services.customer;
 
 import com.example.auction_service.exceptions.EntityNotFoundException;
 import com.example.auction_service.models.address.Address;
+import com.example.auction_service.models.auction.Auction;
+import com.example.auction_service.models.bid.Bid;
+import com.example.auction_service.models.bid.enums.BidStatus;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.customer.dtos.CustomerInputDTO;
 import com.example.auction_service.models.customer.dtos.CustomerRequestDTO;
 import com.example.auction_service.models.user.User;
 import com.example.auction_service.models.user.enums.Status;
+import com.example.auction_service.repositories.AuctionRepository;
+import com.example.auction_service.repositories.BidRepository;
 import com.example.auction_service.repositories.CustomerRepository;
 import com.example.auction_service.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -22,7 +28,8 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
-
+    private final AuctionRepository auctionRepository;
+    private final BidRepository bidRepository;
     public Customer getCustomerById(Long customerId) {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new EntityNotFoundException("Customer", "No customer found with id: " + customerId));
@@ -93,8 +100,38 @@ public class CustomerService {
         return customerRepository.findAll(spec, pageRequest);
     }
 
+    public Page<Auction> getParticipatedAuctions(Long customerId, Pageable pageable) {
+        // Wyszukujemy wszystkie aukcje, w których klient złożył ofertę
+        return auctionRepository.findAllByCustomerIdWithBids(customerId, pageable);
+    }
 
+    public void registerPurchase(Long customerId, Long auctionId) {
+        // Weryfikujemy istnienie klienta i aukcji
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer", "No customer found with id: " + customerId));
+        Auction auction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new EntityNotFoundException("Auction", "No auction found with id: " + auctionId));
 
+        // Zaktualizuj stan aukcji, aby odzwierciedlić fakt dokonania zakupu
+        auction.setIsActive(false);
+        auction.setIsBuyNowCompleted(true);
+        auction.setBuyNowCustomer(customer);
 
+        // Jeśli istnieje, zaktualizuj aktualną wygraną ofertę
+        Bid winningBid = bidRepository.findTopByAuctionIdAndBidStatusOrderByBidValueDesc(auctionId, BidStatus.ACTIVE)
+                .orElse(null);
+        if (winningBid != null) {
+            winningBid.setBidStatus(BidStatus.WON);
+            bidRepository.save(winningBid);
+        }
 
+        // Zapisz zmiany w aukcji
+        auctionRepository.saveAndFlush(auction);
+    }
 }
+
+
+
+
+
+
