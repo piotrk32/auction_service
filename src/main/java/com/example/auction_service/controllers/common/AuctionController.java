@@ -2,6 +2,7 @@ package com.example.auction_service.controllers.common;
 
 
 
+import com.example.auction_service.models.auction.dtos.AuctionRequestDTO;
 import com.example.auction_service.models.auction.dtos.AuctionResponseDTO;
 import com.example.auction_service.services.auction.AuctionFacade;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,6 +49,31 @@ public class AuctionController {
     public ResponseEntity<AuctionResponseDTO> getAuctionById(@PathVariable Long auctionId) {
         AuctionResponseDTO auctionResponseDTO = auctionFacade.getAuctionById(auctionId);
         return ResponseEntity.ok(auctionResponseDTO);
+    }
+
+    @GetMapping("/all")
+    @Operation(summary = "Show all auctions", description = "Functionality lets user to show all available auctions")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successful auction acquisition",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(
+                                    schema = @Schema(implementation = AuctionResponseDTO.class)
+                            )
+                    )),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad Request - temporally returns map of errors or ErrorMessage",
+                    content = @Content(
+                            mediaType = "application/json"
+                    ))
+    })
+    public ResponseEntity<Page<AuctionResponseDTO>> getAuctions(
+            @ModelAttribute @Valid AuctionRequestDTO auctionRequestDTO) {
+        Page<AuctionResponseDTO> auctionResponseDTOPage = auctionFacade.getAuctions(auctionRequestDTO);
+        return new ResponseEntity<>(auctionResponseDTOPage, HttpStatus.OK);
     }
 
 
