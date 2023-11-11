@@ -33,6 +33,10 @@ public class Bid extends BasicEntity {
     @Enumerated(EnumType.STRING)
     BidStatus bidStatus;
 
+    // Pole wskazujące, czy oferta jest aktualnie zwycięska
+    @Column(nullable = false)
+    Boolean isWinning = false;
+
     public Bid(Customer customer, Auction auction,  Double price, Currency currency, Double bidValue) {
         this.customer = customer;
         this.auction = auction;
