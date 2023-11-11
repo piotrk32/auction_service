@@ -52,11 +52,12 @@ public class AuctionService {
                 auctionInputDTO.duration(),
                 auctionInputDTO.price(),
                 currency,
-                auctionInputDTO.price(), // Assuming the initial current bid is the same as the starting price
+                null, // currentBid jest null, ponieważ nie ma jeszcze ofert
                 auctionInputDTO.auctionDate(),
                 auctionEndDate,
                 auctionInputDTO.isBuyNow(),
-                auctionInputDTO.buyNowPrice()
+                auctionInputDTO.buyNowPrice(),
+                auctionInputDTO.isBuyNowCompleted()
         );
 
         return auctionRepository.saveAndFlush(auction);
