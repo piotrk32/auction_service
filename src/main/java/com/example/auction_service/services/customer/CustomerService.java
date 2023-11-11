@@ -5,6 +5,7 @@ import com.example.auction_service.models.address.Address;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.customer.dtos.CustomerInputDTO;
 import com.example.auction_service.models.user.User;
+import com.example.auction_service.models.user.enums.Status;
 import com.example.auction_service.repositories.CustomerRepository;
 import com.example.auction_service.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,12 @@ public class CustomerService {
                 user.getIdToken());
         userRepository.delete(user);
         return customerRepository.saveAndFlush(customer);
+    }
+
+    public void deleteCustomerById(Long customerId) {
+        Customer customer = getCustomerById(customerId);
+        customer.setStatus(Status.INACTIVE);
+        customerRepository.saveAndFlush(customer);
     }
 
 
