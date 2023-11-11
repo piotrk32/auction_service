@@ -4,6 +4,7 @@ import com.example.auction_service.models.auction.enums.Currency;
 import com.example.auction_service.models.auction.enums.StatusAuction;
 import com.example.auction_service.models.basic.BasicEntity;
 import com.example.auction_service.models.bid.Bid;
+import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.provider.Provider;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -33,6 +34,7 @@ public class Auction extends BasicEntity {
 
     String auctionName;
     String description;
+    @Column(nullable = false)
     Boolean isActive;
     Integer duration;
     Double price;
@@ -41,8 +43,9 @@ public class Auction extends BasicEntity {
     LocalDateTime auctionDate;
     LocalDateTime auctionDateEnd;
 
-    //TODO CURRENT BID
-    Double currentBid;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "current_bid_id", referencedColumnName = "id")
+    Bid currentBid;
 
     @Enumerated(EnumType.STRING)
     Currency currency;
@@ -52,12 +55,19 @@ public class Auction extends BasicEntity {
 
     Boolean isBuyNow; // czy aukcja została zakończona przez Kup Teraz
     Double buyNowPrice; // cena Kup Teraz, jeśli jest aktywna
+    @Column(nullable = false)
+    Boolean isBuyNowCompleted = false;
+
+    // Pole wskazujące na klienta, który zakończył aukcję poprzez Kup Teraz
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buy_now_customer_id", referencedColumnName = "id")
+    Customer buyNowCustomer;
 
 
 
     public Auction(Provider provider, String auctionName, String category, String description, Integer duration,
-                   Double price, Currency currency, Double currentBid, LocalDateTime auctionDate,
-                   LocalDateTime auctionDateEnd, Boolean isBuyNow, Double buyNowPrice) {
+                   Double price, Currency currency, Bid currentBid, LocalDateTime auctionDate,
+                   LocalDateTime auctionDateEnd, Boolean isBuyNow, Double buyNowPrice, Boolean isBuyNowCompleted) {
         this.provider = provider;
         this.auctionName = auctionName;
         this.category = category;
@@ -71,6 +81,7 @@ public class Auction extends BasicEntity {
         this.auctionDateEnd = auctionDateEnd;
         this.isBuyNow = isBuyNow;
         this.buyNowPrice = buyNowPrice;
+        this.isBuyNowCompleted = isBuyNowCompleted;
 
     }
 
