@@ -3,6 +3,8 @@ package com.example.auction_service.services.customer;
 import com.example.auction_service.exceptions.EntityNotFoundException;
 import com.example.auction_service.models.address.Address;
 import com.example.auction_service.models.customer.Customer;
+import com.example.auction_service.models.customer.dtos.CustomerInputDTO;
+import com.example.auction_service.models.user.User;
 import com.example.auction_service.repositories.CustomerRepository;
 import com.example.auction_service.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
