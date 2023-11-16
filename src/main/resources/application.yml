@@ -13,18 +13,18 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     locations: classpath:db/migration
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          google:
-#            client-id: 833124940000-2g0ihrs74vqhipt0b1eiiq32ih6dvqhc.apps.googleusercontent.com
-#            client-secret: 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
-#            redirect-uri: http://localhost:8080/login/oauth2/code/google
-#            scope:
-#              - openid
-#              - email
-#              - profile
-#        provider:
-#          google:
-#            token-uri: https://oauth2.googleapis.com/token
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 833124940000-2g0ihrs74vqhipt0b1eiiq32ih6dvqhc.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            scope:
+              - openid
+              - email
+              - profile
+        provider:
+          google:
+            token-uri: https://oauth2.googleapis.com/token
