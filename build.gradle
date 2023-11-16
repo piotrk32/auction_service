@@ -1,8 +1,29 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.1.5'
+    id 'org.springframework.boot' version '3.1.2'
     id 'io.spring.dependency-management' version '1.1.3'
+    id 'io.freefair.lombok' version '8.1.0'
+//    id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
+//    id 'org.openapi.generator' version '5.3.0'
 }
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
@@ -15,10 +36,6 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
@@ -34,7 +51,6 @@ dependencies {
     implementation("org.flywaydb:flyway-core:9.20.1")
     implementation ("org.hibernate.validator:hibernate-validator:7.0.1.Final")
     implementation ("jakarta.validation:jakarta.validation-api:3.0.0")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
     implementation("com.github.javafaker:javafaker:1.0.2")
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
@@ -46,9 +62,37 @@ dependencies {
     implementation("com.google.apis:google-api-services-oauth2:v2-rev157-1.25.0")
     implementation("com.google.http-client:google-http-client-jackson2:1.43.3")
     implementation("com.auth0:java-jwt:4.4.0")
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+//    implementation 'io.springfox:springfox-swagger2:3.0.0'
+//    implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
 }
-
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+
+//openApiGenerate {
+//    generatorName = "spring"
+//    inputSpec = "$projectDir/src/main/resources/api.yaml"
+//    outputDir = "$projectDir"
+//    apiPackage = "com.example.api"
+//    modelPackage = "com.example.model"
+//    configOptions = [
+//            interfaceOnly: "true",
+//            openApiNullable: "false",
+//            skipDefaultInterface: "true"
+//    ]
+//    globalProperties = [
+//            apis: "",
+//            models: ""
+//    ]
+//}
+//compileJava.dependsOn tasks.openApiGenerate
+//processResources.dependsOn tasks.openApiGenerate
+
+
+
+
