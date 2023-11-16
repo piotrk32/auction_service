@@ -48,7 +48,7 @@ public class FineGrainServices {
 //        return getUserEmail().equals(reservationCustomerEmail);
 //    }
 
-    public boolean compareSecurityEmailAndEmailByOfferingId(Long auctionId) {
+    public boolean compareSecurityEmailAndEmailByAuctionId(Long auctionId) {
         String reservationCustomerEmail = auctionService.getProviderEmailByAuctionId(auctionId);
         return getUserEmail().equals(reservationCustomerEmail);
     }
