@@ -22,7 +22,7 @@ public class Item extends BasicEntity {
     @JoinColumn(name = "provider_id", referencedColumnName = "id")
     Provider provider;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "auction_id")
     private Auction auction;
 

@@ -64,7 +64,7 @@ public class Auction extends BasicEntity {
     @JoinColumn(name = "buy_now_customer_id", referencedColumnName = "id")
     Customer buyNowCustomer;
 
-    @OneToMany(mappedBy = "auction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "auction")
     private List<Item> items;
 
 
