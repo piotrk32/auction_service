@@ -24,9 +24,12 @@ public record ItemInputDTO(
         String imageUrl, // Optional, no validation needed
 
         Boolean isBuyNowActive,
+        Boolean isSold,
 
         @Min(value = 0, message = "Buy now price must not be less than or equal to zero.")
         Double buyNowPrice // This can be null if isBuyNowActive is false
+
+
 ) {
 }
 
