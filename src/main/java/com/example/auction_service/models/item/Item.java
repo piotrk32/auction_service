@@ -22,7 +22,7 @@ public class Item extends BasicEntity {
     @JoinColumn(name = "provider_id", referencedColumnName = "id")
     Provider provider;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id")
     private Auction auction;
 
@@ -34,6 +34,8 @@ public class Item extends BasicEntity {
 
     Double buyNowPrice; // cena Kup Teraz
     Boolean isBuyNowActive; // czy opcja Kup Teraz jest aktywna
+
+
 
 
     public Item(Provider provider, String itemName, String description, Double startingPrice,
