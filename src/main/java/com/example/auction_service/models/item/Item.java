@@ -34,12 +34,13 @@ public class Item extends BasicEntity {
 
     Double buyNowPrice; // cena Kup Teraz
     Boolean isBuyNowActive; // czy opcja Kup Teraz jest aktywna
+    Boolean isSold ;
 
 
 
 
     public Item(Provider provider, String itemName, String description, Double startingPrice,
-                String imageUrl, Boolean isBuyNowActive, Double buyNowPrice) {
+                String imageUrl, Boolean isBuyNowActive, Double buyNowPrice, Boolean isSold) {
         this.provider = provider;
         this.itemName = itemName;
         this.description = description;
@@ -47,6 +48,7 @@ public class Item extends BasicEntity {
         this.imageUrl = imageUrl;
         this.isBuyNowActive = isBuyNowActive;
         this.buyNowPrice = buyNowPrice;
+        this.isSold= isSold;
 
     }
 
