@@ -49,3 +49,4 @@ public class ItemService {
         Item item = getItemById(itemId);
         itemRepository.delete(item);
     }
+}
