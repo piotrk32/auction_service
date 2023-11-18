@@ -11,7 +11,8 @@ public record ItemResponseDTO(
         Double startingPrice,
         String imageUrl,
         Boolean isBuyNowActive,
-        Double buyNowPrice) {
+        Double buyNowPrice,
+        Boolean isSold) {
 
     @Builder
     public ItemResponseDTO {}
