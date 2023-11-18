@@ -16,6 +16,7 @@ public class ItemMapper {
                 .imageUrl(item.getImageUrl())
                 .isBuyNowActive(item.getIsBuyNowActive())
                 .buyNowPrice(item.getBuyNowPrice())
+                .isSold(item.getIsSold())
                 .build();
     }
 }
