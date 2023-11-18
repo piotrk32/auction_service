@@ -28,3 +28,5 @@ public record ItemInputDTO(
         @Min(value = 0, message = "Buy now price must not be less than or equal to zero.")
         Double buyNowPrice // This can be null if isBuyNowActive is false
 ) {
+}
+
