@@ -8,8 +8,10 @@ import com.example.auction_service.models.auction.dtos.AuctionProviderRequestDTO
 import com.example.auction_service.models.auction.dtos.AuctionRequestDTO;
 import com.example.auction_service.models.auction.enums.Currency;
 import com.example.auction_service.models.auction.enums.StatusAuction;
+import com.example.auction_service.models.item.Item;
 import com.example.auction_service.models.provider.Provider;
 import com.example.auction_service.repositories.AuctionRepository;
+import com.example.auction_service.repositories.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,12 +20,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AuctionService {
 
     private final AuctionRepository auctionRepository;
+    private final ItemRepository itemRepository;
 
     public Auction getAuctionById(Long auctionId) {
         return auctionRepository.findById(auctionId)
@@ -36,7 +40,7 @@ public class AuctionService {
         auctionRepository.saveAndFlush(auction);
     }
 
-    public Auction createAuction(AuctionInputDTO auctionInputDTO, Provider provider) {
+    public Auction createAuction(AuctionInputDTO auctionInputDTO, Provider provider, List<Long> itemIds) {
         if (!Currency.isValid(String.valueOf(auctionInputDTO.currency()))) {
             throw new InvalidCurrencyException("currency", "Invalid currency: " + auctionInputDTO.currency());
         }
@@ -59,6 +63,7 @@ public class AuctionService {
                 auctionInputDTO.buyNowPrice(),
                 auctionInputDTO.isBuyNowCompleted()
         );
+        assignItemsToAuction(auction.getId(), itemIds);
 
         return auctionRepository.saveAndFlush(auction);
     }
@@ -101,7 +106,7 @@ public class AuctionService {
                 auctionProviderRequestDTO.getSortParam());
         return auctionRepository.findAllByProviderIdAndIsActiveTrue(providerId, pageRequest);
     }
-    public Auction updateAuctionById(Long auctionId, AuctionInputDTO auctionInputDTO) {
+    public Auction updateAuctionById(Long auctionId, AuctionInputDTO auctionInputDTO, List<Long> newItemIds) {
         if (!Currency.isValid(String.valueOf(auctionInputDTO.currency()))) {
             throw new InvalidCurrencyException("currency", "Invalid currency: " + auctionInputDTO.currency());
         }
@@ -121,6 +126,8 @@ public class AuctionService {
         auction.setCurrency(currency);
 
         auction.setStatusAuction(StatusAuction.NOT_STARTED);
+
+        assignItemsToAuction(auctionId, newItemIds);
 
         return auctionRepository.saveAndFlush(auction);
     }
@@ -150,6 +157,16 @@ public class AuctionService {
             // Handle the case where the auction doesn't exist
             throw new EntityNotFoundException("Auction ", "Auction not found with id: " + auctionId);
         }
+    }
+
+    public Auction assignItemsToAuction(Long auctionId, List<Long> itemIds) {
+        Auction auction = getAuctionById(auctionId);
+        List<Item> items = itemRepository.findAllById(itemIds);
+        for (Item item : items) {
+            item.setAuction(auction); // Przypisanie aukcji do przedmiotu
+            itemRepository.save(item); // Zapisanie zmian w przedmiocie
+        }
+        return auction;
     }
 
 

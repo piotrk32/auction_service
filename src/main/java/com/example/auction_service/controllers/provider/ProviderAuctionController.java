@@ -15,10 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,10 +51,21 @@ public class ProviderAuctionController {
                     ))
     })
     @PostMapping("")
-//    @PreAuthorize("(@fineGrainServices.getCurrentUserId()==#auctionInputDTO.providerId())")
-    public ResponseEntity<AuctionResponseDTO> createAuction(@RequestBody @Valid AuctionInputDTO auctionInputDTO) {
-        AuctionResponseDTO auctionResponseDTO = auctionFacade.createAuction(auctionInputDTO);
+    //    @PreAuthorize("(@fineGrainServices.getCurrentUserId()==#auctionInputDTO.providerId())")
+    public ResponseEntity<AuctionResponseDTO> createAuction(
+            @RequestBody @Valid AuctionInputDTO auctionInputDTO,
+            @RequestParam(required = false) List<Long> itemIds) {
+
+        AuctionResponseDTO auctionResponseDTO = auctionFacade.createAuction(auctionInputDTO, itemIds);
         return new ResponseEntity<>(auctionResponseDTO, HttpStatus.CREATED);
     }
+//    @PostMapping("")
+////    @PreAuthorize("(@fineGrainServices.getCurrentUserId()==#auctionInputDTO.providerId())")
+//    public ResponseEntity<AuctionResponseDTO> createAuction(@RequestBody @Valid AuctionInputDTO auctionInputDTO) {
+//        AuctionResponseDTO auctionResponseDTO = auctionFacade.createAuction(auctionInputDTO);
+//        return new ResponseEntity<>(auctionResponseDTO, HttpStatus.CREATED);
+//    }
+
+
 
 }

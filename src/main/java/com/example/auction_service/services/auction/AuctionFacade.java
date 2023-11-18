@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 import static com.example.auction_service.models.auction.dtos.AuctionMapper.mapToAuctionResponseDTO;
 
 @Component
@@ -17,9 +19,10 @@ public class AuctionFacade {
     private final AuctionService auctionService;
     private final ProviderService providerService;
 
-    public AuctionResponseDTO createAuction(AuctionInputDTO auctionInputDTO) {
+    public AuctionResponseDTO createAuction(AuctionInputDTO auctionInputDTO, List<Long> itemIds) {
         Provider provider = providerService.getProviderById(auctionInputDTO.providerId());
-        return mapToAuctionResponseDTO(auctionService.createAuction(auctionInputDTO, provider));
+        Auction auction = auctionService.createAuction(auctionInputDTO, provider, itemIds);
+        return mapToAuctionResponseDTO(auction);
     }
 
     public AuctionResponseDTO getAuctionById(Long auctionId) {
@@ -38,8 +41,8 @@ public class AuctionFacade {
         return auctionService.getAuctionsByProviderId(providerId, auctionProviderRequestDTO).map(AuctionMapper::mapToAuctionResponseDTO);
     }
 
-    public AuctionResponseDTO updateAuctionById(Long auctionId, AuctionInputDTO auctionInputDTO) {
-        Auction updatedAuction = auctionService.updateAuctionById(auctionId, auctionInputDTO);
+    public AuctionResponseDTO updateAuctionById(Long auctionId, AuctionInputDTO auctionInputDTO, List<Long> newItemIds) {
+        Auction updatedAuction = auctionService.updateAuctionById(auctionId, auctionInputDTO, newItemIds);
         return mapToAuctionResponseDTO(updatedAuction);
     }
 

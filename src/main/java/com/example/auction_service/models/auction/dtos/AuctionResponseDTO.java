@@ -3,6 +3,7 @@ package com.example.auction_service.models.auction.dtos;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 public record AuctionResponseDTO(Long auctionId,
@@ -19,7 +20,8 @@ public record AuctionResponseDTO(Long auctionId,
                                  LocalDateTime auctionDateEnd,
                                  Boolean isBuyNow,
                                  Double buyNowPrice,
-                                 Boolean isActive) {
+                                 Boolean isActive,
+                                 List<Long> itemIds) {
 
     @Builder
     public AuctionResponseDTO {}
