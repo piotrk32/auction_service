@@ -5,6 +5,7 @@ import com.example.auction_service.models.auction.enums.StatusAuction;
 import com.example.auction_service.models.basic.BasicEntity;
 import com.example.auction_service.models.bid.Bid;
 import com.example.auction_service.models.customer.Customer;
+import com.example.auction_service.models.item.Item;
 import com.example.auction_service.models.provider.Provider;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -62,6 +63,9 @@ public class Auction extends BasicEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buy_now_customer_id", referencedColumnName = "id")
     Customer buyNowCustomer;
+
+    @OneToMany(mappedBy = "auction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Item> items;
 
 
 
