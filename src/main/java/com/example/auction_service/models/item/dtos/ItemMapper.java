@@ -17,6 +17,8 @@ public class ItemMapper {
                 .isBuyNowActive(item.getIsBuyNowActive())
                 .buyNowPrice(item.getBuyNowPrice())
                 .isSold(item.getIsSold())
+                .customerId(item.getId())
+                .customerFullName(item.getItemName())
                 .build();
     }
 }
