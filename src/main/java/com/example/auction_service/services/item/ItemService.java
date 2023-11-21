@@ -61,20 +61,30 @@ public class ItemService {
     }
 
     public ItemPurchaseDTO buyNow(Long itemId, Long customerId) {
+        // Pobranie przedmiotu
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Item", "No item found with id: " + itemId));
 
+        // Sprawdzenie, czy opcja "Kup Teraz" jest aktywna
         if (!item.getIsBuyNowActive()) {
             throw new IllegalStateException("Buy now option is not active for this item.");
         }
 
+        // Sprawdzenie, czy przedmiot nie został już sprzedany
         if (item.getIsSold()) {
             throw new IllegalStateException("Item has been sold.");
         }
 
-        item.setIsSold(true); // Ustawienie stanu przedmiotu na sprzedany
+        // Pobranie klienta
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer", "No customer found with id: " + customerId));
+
+        // Ustawienie przedmiotu jako sprzedanego i przypisanie go do klienta
+        item.setIsSold(true);
+        item.setCustomer(customer); // Przypisanie klienta do przedmiotu
         itemRepository.save(item);
 
+        // Tworzenie i zwracanie DTO
         return ItemPurchaseDTO.builder()
                 .itemId(item.getId())
                 .providerId(item.getProvider().getId())
