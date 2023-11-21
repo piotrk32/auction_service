@@ -2,6 +2,7 @@ package com.example.auction_service.models.customer;
 
 import com.example.auction_service.models.address.Address;
 import com.example.auction_service.models.bid.Bid;
+import com.example.auction_service.models.item.Item;
 import com.example.auction_service.models.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,6 +38,9 @@ public class Customer extends User {
     }
 
     //TODO connection with items bought in auction
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    List<Item> items;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     List<Bid> bidList;
