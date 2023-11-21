@@ -57,7 +57,6 @@ public class ProviderFacade {
         return mapToProviderResponseDTO(providerService.getProviderByAuctionId(auctionId));
     }
 
-    //TODO CustomerService and Facade
 
     public Page<CustomerResponseDTO> getCustomersByProviderId(Long providerId, CustomerRequestDTO customerRequestDTO) {
         return customerService.getAllCustomersIdByProvider(providerId, customerRequestDTO).map(CustomerMapper::mapToCustomerResponseDTO);
