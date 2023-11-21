@@ -162,10 +162,8 @@ public class AuctionService {
     public Auction assignItemsToAuction(Long auctionId, List<Long> itemIds) {
         Auction auction = getAuctionById(auctionId);
 
-        // Sprawdzenie, czy wszystkie przedmioty z listy itemIds istnieją
         List<Item> items = itemRepository.findAllById(itemIds);
         if (items.size() != itemIds.size()) {
-            // Możesz rzucić wyjątek lub obsłużyć tę sytuację w inny sposób
             throw new EntityNotFoundException("Item", "One or more items not found with provided IDs");
         }
 
