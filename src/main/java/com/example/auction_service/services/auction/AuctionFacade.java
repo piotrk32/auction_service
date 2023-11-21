@@ -45,5 +45,19 @@ public class AuctionFacade {
         Auction updatedAuction = auctionService.updateAuctionById(auctionId, auctionInputDTO, newItemIds);
         return mapToAuctionResponseDTO(updatedAuction);
     }
+    public AuctionResponseDTO activateAuction(Long auctionId) {
+        Auction auction = auctionService.activateAuction(auctionId);
+        return mapToAuctionResponseDTO(auction);
+    }
+
+    public AuctionResponseDTO deactivateAuction(Long auctionId) {
+        Auction auction = auctionService.deactivateAuction(auctionId);
+        return mapToAuctionResponseDTO(auction);
+    }
+
+    public AuctionResponseDTO assignItemsToAuction(Long auctionId, List<Long> itemIds) {
+        Auction auction = auctionService.assignItemsToAuction(auctionId, itemIds);
+        return mapToAuctionResponseDTO(auction);
+    }
 
 }
