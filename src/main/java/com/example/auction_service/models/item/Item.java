@@ -2,6 +2,7 @@ package com.example.auction_service.models.item;
 
 import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.basic.BasicEntity;
+import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.provider.Provider;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -26,18 +27,18 @@ public class Item extends BasicEntity {
     @JoinColumn(name = "auction_id")
     private Auction auction;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    private Customer customer; // Nowe pole reprezentujące klienta, który jest właścicielem przedmiotu
 
     String itemName;
     String description;
     Double startingPrice;
-    String imageUrl; // zdjecie
+    String imageUrl; // Zdjęcie
 
-    Double buyNowPrice; // cena Kup Teraz
-    Boolean isBuyNowActive; // czy opcja Kup Teraz jest aktywna
-    Boolean isSold ;
-
-
-
+    Double buyNowPrice; // Cena Kup Teraz
+    Boolean isBuyNowActive; // Czy opcja Kup Teraz jest aktywna
+    Boolean isSold;
 
     public Item(Provider provider, String itemName, String description, Double startingPrice,
                 String imageUrl, Boolean isBuyNowActive, Double buyNowPrice, Boolean isSold) {
@@ -48,11 +49,6 @@ public class Item extends BasicEntity {
         this.imageUrl = imageUrl;
         this.isBuyNowActive = isBuyNowActive;
         this.buyNowPrice = buyNowPrice;
-        this.isSold= isSold;
-
+        this.isSold = isSold;
     }
-
-
-
-
 }

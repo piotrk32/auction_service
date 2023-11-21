@@ -12,7 +12,9 @@ public record ItemResponseDTO(
         String imageUrl,
         Boolean isBuyNowActive,
         Double buyNowPrice,
-        Boolean isSold) {
+        Boolean isSold,
+        Long customerId, // Dodane pole
+        String customerFullName) {
 
     @Builder
     public ItemResponseDTO {}
