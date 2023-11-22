@@ -1,5 +1,6 @@
 package com.example.auction_service.security;
 //import com.example.auction_service.security.filters.PayloadAuthenticationFilter;
+
 import com.example.auction_service.security.filters.PayloadAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,15 +33,15 @@ public class SecurityConfig {
         http
                 .cors(customizer -> customizer.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-//                .addFilterBefore(exceptionHandler, LogoutFilter.class)
-//                .addFilterBefore(payloadAuthenticationFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandler, LogoutFilter.class)
+                .addFilterBefore(payloadAuthenticationFilter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(
                         (authorize) -> authorize
-//                                .requestMatchers("/provider/**").hasRole("PROVIDER")
-//                                .requestMatchers("/customer/**").hasRole("CUSTOMER")
-//                                .requestMatchers("/common/**").hasAnyRole("CUSTOMER", "PROVIDER")
-//                                .requestMatchers("/register/**").hasRole("INCOMPLETE_REGISTRATION")
-                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-ui/index.html").permitAll()
+                                .requestMatchers("/provider/**").hasRole("PROVIDER")
+                                .requestMatchers("/customer/**").hasRole("CUSTOMER")
+                                .requestMatchers("/common/**").hasAnyRole("CUSTOMER", "PROVIDER")
+                                .requestMatchers("/register/**").hasRole("INCOMPLETE_REGISTRATION")
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-ui/index.html", "/login/oauth2/code/google").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

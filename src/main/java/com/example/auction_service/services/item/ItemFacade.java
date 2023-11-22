@@ -52,4 +52,6 @@ public class ItemFacade {
     public void assignItemToCustomer(Long itemId, Long customerId) {
         itemService.assignItemToCustomer(itemId, customerId);
     }
+
+    //TODO enpointy do ProviderItemController oraz ItemController
 }
