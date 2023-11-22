@@ -1,0 +1,4 @@
+Redicrect uri
+
+https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=381036476606-bd63e3tcdrtm4jl3ac78p767ah4uchu2
+.apps.googleusercontent.com&redirect_uri=http://localhost:8080/login/oauth2/code/google&scope=openid%20email%20profile&access_type=offline
