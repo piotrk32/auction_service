@@ -18,8 +18,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 833124940000-2g0ihrs74vqhipt0b1eiiq32ih6dvqhc.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 381036476606-bd63e3tcdrtm4jl3ac78p767ah4uchu2.apps.googleusercontent.com
+            client-secret: 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
             redirect-uri: http://localhost:8080/login/oauth2/code/google
             scope:
               - openid
