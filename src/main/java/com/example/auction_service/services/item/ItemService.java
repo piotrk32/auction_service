@@ -29,8 +29,9 @@ public class ItemService {
     }
 
     public Item createItem(ItemInputDTO itemInputDTO, Provider provider) {
-        Item item = new Item(
-                provider,
+
+
+        Item item = new Item(provider,
                 itemInputDTO.itemName(),
                 itemInputDTO.description(),
                 itemInputDTO.startingPrice(),

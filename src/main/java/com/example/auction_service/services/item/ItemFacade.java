@@ -20,8 +20,8 @@ public class ItemFacade {
 
     public ItemResponseDTO createItem(ItemInputDTO itemInputDTO) {
         Provider provider = providerService.getProviderById(itemInputDTO.providerId());
-        Item item = itemService.createItem(itemInputDTO, provider);
-        return mapToItemResponseDTO(item);
+//        Item item = itemService.createItem(itemInputDTO, provider);
+        return mapToItemResponseDTO(itemService.createItem(itemInputDTO, provider));
     }
 
     public ItemResponseDTO getItemById(Long itemId) {

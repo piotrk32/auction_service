@@ -35,7 +35,6 @@ public class Item extends BasicEntity {
     String description;
     Double startingPrice;
     String imageUrl; // Zdjęcie
-
     Double buyNowPrice; // Cena Kup Teraz
     Boolean isBuyNowActive; // Czy opcja Kup Teraz jest aktywna
     Boolean isSold;
