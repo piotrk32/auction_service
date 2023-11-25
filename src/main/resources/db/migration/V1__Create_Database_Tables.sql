@@ -1,6 +1,9 @@
+CREATE SEQUENCE if NOT EXISTS public.id_seq AS bigint START WITH 1000;
+
+
 -- Address table
 CREATE TABLE addresses (
-                           id SERIAL PRIMARY KEY,
+                           id BIGINT NOT NULL DEFAULT nextval('id_seq') PRIMARY KEY,
                            country VARCHAR(255),
                            city VARCHAR(255),
                            street VARCHAR(255),
@@ -12,8 +15,8 @@ CREATE TABLE addresses (
 
 -- User table
 CREATE TABLE users (
-                       id SERIAL PRIMARY KEY,
-                       address_id INTEGER REFERENCES addresses(id),
+                       id BIGINT NOT NULL DEFAULT nextval('id_seq') PRIMARY KEY,
+                       address_id BIGINT REFERENCES addresses(id),
                        first_name VARCHAR(255),
                        last_name VARCHAR(255),
                        birth_date DATE,
@@ -27,42 +30,43 @@ CREATE TABLE users (
 
 -- Customer table
 CREATE TABLE customers (
-    id INTEGER PRIMARY KEY REFERENCES users(id)
+
+    id BIGINT PRIMARY KEY NOT NULL DEFAULT nextval('id_seq') REFERENCES users(id)
 );
 
 -- Provider table
 CREATE TABLE providers (
-    id INTEGER PRIMARY KEY REFERENCES users(id)
+    id BIGINT PRIMARY KEY NOT NULL DEFAULT nextval('id_seq') REFERENCES users(id)
 );
 
 -- Auction table
 CREATE TABLE auctions (
-                          id SERIAL PRIMARY KEY,
-                          provider_id INTEGER REFERENCES providers(id),
+                          id BIGINT NOT NULL DEFAULT nextval('id_seq') PRIMARY KEY,
+                          provider_id BIGINT REFERENCES providers(id),
                           auction_name VARCHAR(255),
                           description TEXT,
                           is_active BOOLEAN DEFAULT TRUE,
                           duration INTEGER,
-                          price DECIMAL(10, 2),
-                          current_bid DECIMAL(10, 2),
+                          price DECIMAL(9, 2),
+                          current_bid DECIMAL(9, 2),
                           currency VARCHAR(50)
 );
 
 -- Bid table
 CREATE TABLE bids (
-                      id SERIAL PRIMARY KEY,
-                      customer_id INTEGER REFERENCES customers(id),
-                      auction_id INTEGER REFERENCES auctions(id),
-                      bid_value DECIMAL(10, 2),
+                      id BIGINT NOT NULL DEFAULT nextval('id_seq') PRIMARY KEY,
+                      customer_id BIGINT REFERENCES customers(id),
+                      auction_id BIGINT REFERENCES auctions(id),
+                      bid_value DECIMAL(9, 2),
                       bid_status VARCHAR(50) DEFAULT 'ACTIVE'
 );
 
 -- Item table
 CREATE TABLE items (
-                       id SERIAL PRIMARY KEY,
-                       provider_id INTEGER REFERENCES providers(id),
-                       auction_id INTEGER REFERENCES auctions(id),
+                       id BIGINT NOT NULL DEFAULT nextval('id_seq') PRIMARY KEY,
+                       provider_id BIGINT REFERENCES providers(id),
+                       auction_id BIGINT REFERENCES auctions(id),
                        item_name VARCHAR(255),
-                       item_description TEXT,
+                       description TEXT,
                        starting_price DECIMAL(10, 2)
 );
