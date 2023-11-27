@@ -33,7 +33,7 @@ public class ItemFacade {
         itemService.deleteItemById(itemId);
     }
 
-    public ItemResponseDTO updateItemById(Long itemId, ItemInputDTO itemInputDTO) {
+    public ItemResponseDTO updateItemById(Long itemId, ItemUpdateDTO itemInputDTO) {
         Item updatedItem = itemService.updateItemById(itemId, itemInputDTO);
         return mapToItemResponseDTO(updatedItem);
     }
