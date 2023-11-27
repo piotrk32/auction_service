@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -88,6 +89,36 @@ public class Auction extends BasicEntity {
         this.isBuyNowCompleted = isBuyNowCompleted;
         this.statusAuction = StatusAuction.NOT_STARTED;
 
+    }
+
+    public Auction(
+            Provider provider,
+            String auctionName,
+            String category,
+            String description,
+            Currency currency,
+            LocalDateTime auctionDate,
+            LocalDateTime auctionDateEnd,
+            Boolean isBuyNow,
+            Double buyNowPrice,
+            Double price
+    ) {
+        this.provider = provider;
+        this.auctionName = auctionName;
+        this.category = category;
+        this.description = description;
+        this.currency = currency;
+        this.auctionDate = auctionDate;
+        this.auctionDateEnd = auctionDateEnd;
+        this.isBuyNow = isBuyNow;
+        this.buyNowPrice = isBuyNow ? buyNowPrice : null; // Ustawienie buyNowPrice tylko w przypadku isBuyNow = true
+        this.price = price;
+
+        // Obliczenie duration w godzinach
+        this.duration = Math.toIntExact(Duration.between(auctionDate, auctionDateEnd).toHours());
+
+        // Ustawienie domyślnego statusu aukcji
+        this.statusAuction = StatusAuction.NOT_STARTED;
     }
 
 
