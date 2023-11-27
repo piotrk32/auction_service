@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/provider/auction")
-@Tag(name = "Provider Controller")
+@Tag(name = "Provider Auction Controller")
 public class ProviderAuctionController {
 
     private final AuctionFacade auctionFacade;
