@@ -46,27 +46,32 @@ public class AuctionService {
         }
         Currency currency = Currency.valueOf(auctionInputDTO.currency().name());
 
-        LocalDateTime auctionEndDate = auctionInputDTO.auctionDate().plusMinutes(auctionInputDTO.duration());
+        LocalDateTime auctionStartDate = auctionInputDTO.auctionDate();
+        LocalDateTime auctionEndDate = auctionInputDTO.auctionDateEnd();
+
+//        LocalDateTime auctionEndDate = auctionInputDTO.auctionDate().plusMinutes(auctionInputDTO.duration());
+        long durationInHours = java.time.Duration.between(auctionStartDate, auctionEndDate).toHours();
 
         Auction auction = new Auction(
                 provider,
                 auctionInputDTO.auctionName(),
                 auctionInputDTO.category(),
                 auctionInputDTO.description(),
-                auctionInputDTO.duration(),
-                auctionInputDTO.price(),
-                currency,
-                null, // currentBid jest null, ponieważ nie ma jeszcze ofert
+                Currency.valueOf(auctionInputDTO.currency().name()),
                 auctionInputDTO.auctionDate(),
-                auctionEndDate,
+                auctionInputDTO.auctionDateEnd(),
                 auctionInputDTO.isBuyNow(),
                 auctionInputDTO.buyNowPrice(),
-                auctionInputDTO.isBuyNowCompleted(),
-                auctionInputDTO.statusAuction()
+                auctionInputDTO.price()
         );
-        assignItemsToAuction(auction.getId(), itemIds);
 
-        return auctionRepository.saveAndFlush(auction);
+        // Najpierw zapisz aukcję
+        Auction savedAuction = auctionRepository.saveAndFlush(auction);
+
+        // Następnie przypisz przedmioty do zapisanej aukcji
+        assignItemsToAuction(savedAuction.getId(), itemIds);
+
+        return savedAuction; // Zwróć zapisaną aukcję
     }
 
     public Page<Auction> getAuctions(AuctionRequestDTO auctionRequestDTO) {
@@ -117,8 +122,7 @@ public class AuctionService {
         auction.setAuctionName(auctionInputDTO.auctionName());
         auction.setDescription(auctionInputDTO.description());
         auction.setPrice(auctionInputDTO.price());
-        auction.setDuration(auctionInputDTO.duration());
-        auction.setStatusAuction(StatusAuction.valueOf(auctionInputDTO.statusAuction()));
+//        auction.setDuration(auctionInputDTO.duration());
         auction.setAuctionDate(auctionInputDTO.auctionDate());
         auction.setAuctionDateEnd(auctionInputDTO.auctionDateEnd());
         auction.setIsBuyNow(auctionInputDTO.isBuyNow());

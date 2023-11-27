@@ -19,9 +19,14 @@ public class AuctionFacade {
     private final AuctionService auctionService;
     private final ProviderService providerService;
 
-    public AuctionResponseDTO createAuction(AuctionInputDTO auctionInputDTO, List<Long> itemIds) {
-        Provider provider = providerService.getProviderById(auctionInputDTO.providerId());
+    public AuctionResponseDTO createAuction(AuctionInputDTO auctionInputDTO, List<Long> itemIds, Long providerId) {
+        // Pobieranie dostawcy na podstawie ID dostarczonego jako argument metody
+        Provider provider = providerService.getProviderById(providerId);
+
+        // Tworzenie aukcji za pomocą serwisu aukcyjnego
         Auction auction = auctionService.createAuction(auctionInputDTO, provider, itemIds);
+
+        // Mapowanie aukcji do odpowiedzi DTO
         return mapToAuctionResponseDTO(auction);
     }
 
