@@ -3,6 +3,7 @@ package com.example.auction_service.services.customer;
 import com.example.auction_service.exceptions.EntityNotFoundException;
 import com.example.auction_service.models.address.Address;
 import com.example.auction_service.models.auction.Auction;
+import com.example.auction_service.models.auction.enums.StatusAuction;
 import com.example.auction_service.models.bid.Bid;
 import com.example.auction_service.models.bid.enums.BidStatus;
 import com.example.auction_service.models.customer.Customer;
@@ -113,7 +114,7 @@ public class CustomerService {
                 .orElseThrow(() -> new EntityNotFoundException("Auction", "No auction found with id: " + auctionId));
 
         // Zaktualizuj stan aukcji, aby odzwierciedlić fakt dokonania zakupu
-        auction.setIsActive(false);
+        auction.setStatusAuction(StatusAuction.DONE);
         auction.setIsBuyNowCompleted(true);
         auction.setBuyNowCustomer(customer);
 
