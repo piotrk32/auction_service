@@ -155,6 +155,40 @@ public class ProviderItemController {
         }
     }
 
+    @Operation(summary = "Delete existing item", description = "Deletes an item based on the provided ID")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Successful deletion of item"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad Request",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Not Found - Item not found",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)
+                    )
+            )
+    })
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<?> deleteItemById(@PathVariable Long itemId) {
+        try {
+            itemFacade.deleteItemById(itemId);
+            return ResponseEntity.noContent().build(); // 204 No Content status
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("Item Not Found", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal Server Error", e.getMessage()));
+        }
+    }
+
+
+
 
 
 }
