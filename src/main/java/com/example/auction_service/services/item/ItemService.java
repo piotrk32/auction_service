@@ -7,6 +7,7 @@ import com.example.auction_service.models.item.Item;
 import com.example.auction_service.models.item.dtos.ItemInputDTO;
 import com.example.auction_service.models.item.dtos.ItemPurchaseDTO;
 import com.example.auction_service.models.item.dtos.ItemRequestDTO;
+import com.example.auction_service.models.item.dtos.ItemUpdateDTO;
 import com.example.auction_service.models.provider.Provider;
 import com.example.auction_service.repositories.AuctionRepository;
 import com.example.auction_service.repositories.CustomerRepository;
@@ -49,14 +50,17 @@ public class ItemService {
         return itemRepository.saveAndFlush(item);
     }
 
-    public Item updateItemById(Long itemId, ItemInputDTO itemInputDTO) {
+    public Item updateItemById(Long itemId, ItemUpdateDTO itemUpdateDTO) {
         Item item = getItemById(itemId);
-        item.setItemName(itemInputDTO.itemName());
-        item.setDescription(itemInputDTO.description());
-        item.setStartingPrice(itemInputDTO.startingPrice());
-        item.setImageUrl(itemInputDTO.imageUrl());
-        item.setIsBuyNowActive(itemInputDTO.isBuyNowActive());
-        item.setBuyNowPrice(itemInputDTO.buyNowPrice());
+        /*if (itemUpdateDTO.isBuyNowActive() && (itemUpdateDTO.buyNowPrice() == null || itemUpdateDTO.buyNowPrice() < 0)) {
+            throw new IllegalArgumentException("Buy now price must be provided when buy now is active");
+        }*/
+        item.setItemName(itemUpdateDTO.itemName());
+        item.setDescription(itemUpdateDTO.description());
+        item.setStartingPrice(itemUpdateDTO.startingPrice());
+        item.setImageUrl(itemUpdateDTO.imageUrl());
+        item.setIsBuyNowActive(itemUpdateDTO.isBuyNowActive());
+        item.setBuyNowPrice(itemUpdateDTO.buyNowPrice());
 
         return itemRepository.saveAndFlush(item);
     }

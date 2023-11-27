@@ -22,5 +22,5 @@ public interface ItemRepository extends JpaRepository<Item, Long>, JpaSpecificat
 
     List<Item> findByItemNameContainingIgnoreCase(String nameFragment);
 
-    List<Item> findByItemNameContainingIgnoreCaseAndAuction_IsActiveTrue(String nameFragment);
+//    List<Item> findByItemNameContainingIgnoreCaseAndAuction_IsActiveTrue(String nameFragment);
 }
