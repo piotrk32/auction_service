@@ -8,6 +8,7 @@ import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.item.Item;
 import com.example.auction_service.models.provider.Provider;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,7 @@ public class Auction extends BasicEntity {
     String auctionName;
     String description;
     @Column(nullable = false)
-    Boolean isActive;
+//    Boolean isActive;
     Integer duration;
     Double price;
     String category;
@@ -71,12 +72,11 @@ public class Auction extends BasicEntity {
 
     public Auction(Provider provider, String auctionName, String category, String description, Integer duration,
                    Double price, Currency currency, Bid currentBid, LocalDateTime auctionDate,
-                   LocalDateTime auctionDateEnd, Boolean isBuyNow, Double buyNowPrice, Boolean isBuyNowCompleted) {
+                   LocalDateTime auctionDateEnd, Boolean isBuyNow, Double buyNowPrice, Boolean isBuyNowCompleted, @NotNull(message = "Auction activity cannot be empty.") String statusAuction) {
         this.provider = provider;
         this.auctionName = auctionName;
         this.category = category;
         this.description = description;
-        this.isActive = true;
         this.duration = duration;
         this.price = price;
         this.currency = currency;
