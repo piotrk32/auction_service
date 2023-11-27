@@ -72,7 +72,7 @@ public class Auction extends BasicEntity {
 
     public Auction(Provider provider, String auctionName, String category, String description, Integer duration,
                    Double price, Currency currency, Bid currentBid, LocalDateTime auctionDate,
-                   LocalDateTime auctionDateEnd, Boolean isBuyNow, Double buyNowPrice, Boolean isBuyNowCompleted, @NotNull(message = "Auction activity cannot be empty.") String statusAuction) {
+                   LocalDateTime auctionDateEnd, Boolean isBuyNow, Double buyNowPrice, Boolean isBuyNowCompleted, String statusAuction) {
         this.provider = provider;
         this.auctionName = auctionName;
         this.category = category;
@@ -86,7 +86,10 @@ public class Auction extends BasicEntity {
         this.isBuyNow = isBuyNow;
         this.buyNowPrice = buyNowPrice;
         this.isBuyNowCompleted = isBuyNowCompleted;
+        this.statusAuction = StatusAuction.NOT_STARTED;
 
     }
+
+
 
 }
