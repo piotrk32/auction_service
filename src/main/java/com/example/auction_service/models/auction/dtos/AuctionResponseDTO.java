@@ -20,7 +20,8 @@ public record AuctionResponseDTO(Long auctionId,
                                  LocalDateTime auctionDateEnd,
                                  Boolean isBuyNow,
                                  Double buyNowPrice,
-                                 Boolean isActive,
+                                 String statusAuction,
+                                 Long currentBid,
                                  List<Long> itemIds) {
 
     @Builder
