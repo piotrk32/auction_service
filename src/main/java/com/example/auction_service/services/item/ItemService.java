@@ -1,7 +1,9 @@
 package com.example.auction_service.services.item;
 
 import com.example.auction_service.exceptions.EntityNotFoundException;
+import com.example.auction_service.exceptions.auction.InvalidCurrencyException;
 import com.example.auction_service.models.auction.Auction;
+import com.example.auction_service.models.auction.enums.Currency;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.item.Item;
 import com.example.auction_service.models.item.dtos.ItemInputDTO;
@@ -36,6 +38,9 @@ public class ItemService {
 
     public Item createItem(ItemInputDTO itemInputDTO, Provider provider) {
 
+//        if (!Currency.isValid(itemInputDTO.currency())) {
+//            throw new InvalidCurrencyException("currency", "Invalid currency: " + itemInputDTO.currency());
+//        }
 
         Item item = new Item(provider,
                 itemInputDTO.itemName(),
@@ -52,14 +57,15 @@ public class ItemService {
 
     public Item updateItemById(Long itemId, ItemUpdateDTO itemUpdateDTO) {
         Item item = getItemById(itemId);
-        /*if (itemUpdateDTO.isBuyNowActive() && (itemUpdateDTO.buyNowPrice() == null || itemUpdateDTO.buyNowPrice() < 0)) {
-            throw new IllegalArgumentException("Buy now price must be provided when buy now is active");
-        }*/
+
         item.setItemName(itemUpdateDTO.itemName());
         item.setDescription(itemUpdateDTO.description());
-        item.setStartingPrice(itemUpdateDTO.startingPrice());
         item.setImageUrl(itemUpdateDTO.imageUrl());
         item.setIsBuyNowActive(itemUpdateDTO.isBuyNowActive());
+        if (itemUpdateDTO.isBuyNowActive() && (itemUpdateDTO.buyNowPrice() == null || itemUpdateDTO.buyNowPrice() < 0)) {
+            throw new IllegalArgumentException("Buy now price must be provided when buy now is active");
+        }
+        item.setStartingPrice(itemUpdateDTO.startingPrice());
         item.setBuyNowPrice(itemUpdateDTO.buyNowPrice());
 
         return itemRepository.saveAndFlush(item);

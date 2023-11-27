@@ -2,7 +2,8 @@ package com.example.auction_service.validators.item;
 
 public class PriceValidators {
 
-    public static final String PRICE_REGEX = "^[0-9]+([.,][0-9]{1,2})?$";
+    public static final String PRICE_REGEX = "^[0-9]+(?:[.,][0-9]{1,2})?$";
+
 
     public static boolean containsOnlyNumbersCommaOrDot(String value) {
         return value.matches("^[0-9,.]*$");

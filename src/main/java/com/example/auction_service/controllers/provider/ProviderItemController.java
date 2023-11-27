@@ -144,7 +144,7 @@ public class ProviderItemController {
                     ))
     })
     @PutMapping("/{itemId}")
-    public ResponseEntity<?> updateItem(@PathVariable Long itemId, @RequestBody ItemUpdateDTO itemUpdateDTO) {
+    public ResponseEntity<?> updateItem(@PathVariable Long itemId, @Validated @RequestBody ItemUpdateDTO itemUpdateDTO) {
         try {
             ItemResponseDTO updatedItem = itemFacade.updateItemById(itemId, itemUpdateDTO);
             return ResponseEntity.ok(updatedItem);
