@@ -42,7 +42,7 @@ public record AuctionInputDTO(
         Double buyNowPrice,
 
         @NotNull(message = "Auction activity cannot be empty.")
-        Boolean isActive,
+        String statusAuction,
 
         @NotNull(message = "Auction buy now status cannot be empty.")
         Boolean isBuyNowCompleted
