@@ -1,12 +1,14 @@
 package com.example.auction_service.services.item;
 
 import com.example.auction_service.exceptions.EntityNotFoundException;
+import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.item.Item;
 import com.example.auction_service.models.item.dtos.ItemInputDTO;
 import com.example.auction_service.models.item.dtos.ItemPurchaseDTO;
 import com.example.auction_service.models.item.dtos.ItemRequestDTO;
 import com.example.auction_service.models.provider.Provider;
+import com.example.auction_service.repositories.AuctionRepository;
 import com.example.auction_service.repositories.CustomerRepository;
 import com.example.auction_service.repositories.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +18,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ItemService {
 
     private final ItemRepository itemRepository;
     private final CustomerRepository customerRepository;
+    private final AuctionRepository auctionRepository;
 
     public Item getItemById(Long itemId) {
         return itemRepository.findById(itemId)
@@ -134,6 +139,27 @@ public class ItemService {
 
         item.setCustomer(customer); // Przypisanie klienta do przedmiotu
         itemRepository.save(item);
+    }
+
+    public void removeItemFromAuction(Long auctionId, Long itemId) {
+        Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
+        Optional<Item> itemOptional = itemRepository.findById(itemId);
+
+        if (auctionOptional.isPresent() && itemOptional.isPresent()) {
+            Item item = itemOptional.get();
+            Auction auction = auctionOptional.get();
+
+            if (auction.getItems().contains(item)) {
+                auction.getItems().remove(item);
+                item.setAuction(null); // Usuwamy przypisanie do aukcji
+                auctionRepository.save(auction);
+                itemRepository.save(item);
+            } else {
+                throw new RuntimeException("Item not associated with the auction");
+            }
+        } else {
+            throw new RuntimeException("Auction or Item not found");
+        }
     }
 }
 
