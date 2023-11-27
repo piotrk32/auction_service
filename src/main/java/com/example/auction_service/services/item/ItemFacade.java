@@ -53,5 +53,9 @@ public class ItemFacade {
         itemService.assignItemToCustomer(itemId, customerId);
     }
 
+    public void removeItemFromAuction(Long auctionId, Long itemId) {
+        itemService.removeItemFromAuction(auctionId, itemId);
+    }
+
     //TODO enpointy do ProviderItemController oraz ItemController
 }
