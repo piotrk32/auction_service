@@ -36,7 +36,7 @@ public class AuctionService {
 
     public void deleteAuctionById(Long auctionId) {
         Auction auction = getAuctionById(auctionId);
-        auction.setIsActive(false);
+        auction.setStatusAuction(StatusAuction.DELETED);
         auctionRepository.saveAndFlush(auction);
     }
 
@@ -61,7 +61,8 @@ public class AuctionService {
                 auctionEndDate,
                 auctionInputDTO.isBuyNow(),
                 auctionInputDTO.buyNowPrice(),
-                auctionInputDTO.isBuyNowCompleted()
+                auctionInputDTO.isBuyNowCompleted(),
+                auctionInputDTO.statusAuction()
         );
         assignItemsToAuction(auction.getId(), itemIds);
 
@@ -104,7 +105,9 @@ public class AuctionService {
                 Integer.parseInt(auctionProviderRequestDTO.getSize()),
                 Sort.Direction.valueOf(auctionProviderRequestDTO.getDirection()),
                 auctionProviderRequestDTO.getSortParam());
-        return auctionRepository.findAllByProviderIdAndIsActiveTrue(providerId, pageRequest);
+
+        // Załóżmy, że chcesz szukać aktywnych aukcji
+        return auctionRepository.findAllByProviderIdAndStatusAuction(providerId, StatusAuction.ACTIVE, pageRequest);
     }
     public Auction updateAuctionById(Long auctionId, AuctionInputDTO auctionInputDTO, List<Long> newItemIds) {
         if (!Currency.isValid(String.valueOf(auctionInputDTO.currency()))) {
@@ -115,7 +118,7 @@ public class AuctionService {
         auction.setDescription(auctionInputDTO.description());
         auction.setPrice(auctionInputDTO.price());
         auction.setDuration(auctionInputDTO.duration());
-        auction.setIsActive(auctionInputDTO.isActive());
+        auction.setStatusAuction(StatusAuction.valueOf(auctionInputDTO.statusAuction()));
         auction.setAuctionDate(auctionInputDTO.auctionDate());
         auction.setAuctionDateEnd(auctionInputDTO.auctionDateEnd());
         auction.setIsBuyNow(auctionInputDTO.isBuyNow());
@@ -125,7 +128,7 @@ public class AuctionService {
         Currency currency = Currency.valueOf(String.valueOf(auctionInputDTO.currency()));
         auction.setCurrency(currency);
 
-        auction.setStatusAuction(StatusAuction.NOT_STARTED);
+//        auction.setStatusAuction(StatusAuction.NOT_STARTED);
 
         assignItemsToAuction(auctionId, newItemIds);
 
