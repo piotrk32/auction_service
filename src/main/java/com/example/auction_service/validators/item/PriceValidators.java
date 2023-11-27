@@ -1,4 +1,4 @@
-package com.example.auction_service.validators;
+package com.example.auction_service.validators.item;
 
 public class PriceValidators {
 
