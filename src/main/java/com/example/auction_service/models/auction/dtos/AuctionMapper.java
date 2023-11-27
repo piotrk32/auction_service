@@ -3,6 +3,7 @@ package com.example.auction_service.models.auction.dtos;
 import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.item.Item;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,9 +11,11 @@ public class AuctionMapper {
 
     public static AuctionResponseDTO mapToAuctionResponseDTO(Auction auction) {
         // Mapowanie listy ID przedmiotów
-        List<Long> itemIds = auction.getItems().stream()
+        List<Long> itemIds = auction.getItems() != null ? auction.getItems().stream()
                 .map(Item::getId)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) : Collections.emptyList();
+
+        Long currentBidId = auction.getCurrentBid() != null ? auction.getCurrentBid().getId() : null;
 
         return AuctionResponseDTO
                 .builder()
@@ -28,9 +31,9 @@ public class AuctionMapper {
                 .auctionDate(auction.getAuctionDate())
                 .auctionDateEnd(auction.getAuctionDateEnd())
                 .isBuyNow(auction.getIsBuyNow())
-                .buyNowPrice(auction.getBuyNowPrice())
+                .buyNowPrice(auction.getIsBuyNow() ? auction.getBuyNowPrice() : null) // Jeśli isBuyNow jest false, buyNowPrice może być null
                 .statusAuction(auction.getStatusAuction().name())
-                .currentBid(auction.getCurrentBid().getId())
+                .currentBid(currentBidId)
                 .itemIds(itemIds) // Dodanie listy ID przedmiotów
                 .build();
     }
