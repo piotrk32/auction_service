@@ -5,6 +5,7 @@ import com.example.auction_service.exceptions.ErrorMessage;
 import com.example.auction_service.models.auction.dtos.AuctionResponseDTO;
 import com.example.auction_service.models.item.dtos.ItemInputDTO;
 import com.example.auction_service.models.item.dtos.ItemResponseDTO;
+import com.example.auction_service.models.item.dtos.ItemUpdateDTO;
 import com.example.auction_service.services.auction.AuctionFacade;
 import com.example.auction_service.services.item.ItemFacade;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,10 +14,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -116,6 +117,41 @@ public class ProviderItemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("Entity Not Found", e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal Server Error", "An unexpected error occurred"));
+        }
+    }
+
+    @Operation(summary = "Update existing item", description = "Updates an item based on the provided ID and payload")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successful update of item",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ItemResponseDTO.class)
+                    )),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad Request - returns map of errors",
+                    content = @Content(
+                            mediaType = "application/json"
+                    )),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Not Found - Item not found",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)
+                    ))
+    })
+    @PutMapping("/{itemId}")
+    public ResponseEntity<?> updateItem(@PathVariable Long itemId, @RequestBody ItemUpdateDTO itemUpdateDTO) {
+        try {
+            ItemResponseDTO updatedItem = itemFacade.updateItemById(itemId, itemUpdateDTO);
+            return ResponseEntity.ok(updatedItem);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("Item Not Found", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal Server Error", e.getMessage()));
         }
     }
 
