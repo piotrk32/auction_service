@@ -1,5 +1,6 @@
 package com.example.auction_service.controllers.provider;
 
+import com.example.auction_service.exceptions.EntityNotFoundException;
 import com.example.auction_service.exceptions.ErrorMessage;
 import com.example.auction_service.models.auction.dtos.AuctionResponseDTO;
 import com.example.auction_service.models.item.dtos.ItemInputDTO;
@@ -88,4 +89,36 @@ public class ProviderItemController {
             ItemResponseDTO itemResponseDTO = itemFacade.createItem(itemInputDTO);
             return new ResponseEntity<>(itemResponseDTO, HttpStatus.CREATED);
     }
+
+    @Operation(summary = "Remove an item from an auction", description = "Remove a specific item from a given auction")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Item successfully removed from the auction",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Auction or Item not found",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error",
+                    content = @Content(mediaType = "application/json"))
+    })
+    @DeleteMapping("/{auctionId}/items/{itemId}")
+    public ResponseEntity<?> removeItemFromAuction(@PathVariable Long auctionId, @PathVariable Long itemId) {
+        try {
+            itemFacade.removeItemFromAuction(auctionId, itemId);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("Entity Not Found", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal Server Error", "An unexpected error occurred"));
+        }
+    }
+
+
+
 }

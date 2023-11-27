@@ -1,4 +1,4 @@
-Aspring:
+spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/auction_service
     username: postgres
