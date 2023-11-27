@@ -5,6 +5,7 @@ import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.auction.dtos.AuctionInputDTO;
 import com.example.auction_service.models.auction.dtos.AuctionProviderRequestDTO;
 import com.example.auction_service.models.auction.dtos.AuctionResponseDTO;
+import com.example.auction_service.security.services.FineGrainServices;
 import com.example.auction_service.services.auction.AuctionFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,6 +29,7 @@ import java.util.List;
 public class ProviderAuctionController {
 
     private final AuctionFacade auctionFacade;
+    private final FineGrainServices fineGrainServices;
 
     @Operation(summary = "Create new auction", description = "Creates a auction from the provided payload")
     @ApiResponses(value = {
@@ -53,12 +55,16 @@ public class ProviderAuctionController {
                     ))
     })
     @PostMapping("")
-    //    @PreAuthorize("(@fineGrainServices.getCurrentUserId()==#auctionInputDTO.providerId())")
+// @PreAuthorize(...) - jeśli potrzebujesz autoryzacji
     public ResponseEntity<AuctionResponseDTO> createAuction(
             @RequestBody @Valid AuctionInputDTO auctionInputDTO,
             @RequestParam(required = false) List<Long> itemIds) {
 
-        AuctionResponseDTO auctionResponseDTO = auctionFacade.createAuction(auctionInputDTO, itemIds);
+        // Pobranie identyfikatora zalogowanego dostawcy
+        Long providerId = fineGrainServices.getCurrentUserId(); // Zakładając, że ta metoda istnieje i zwraca ID zalogowanego użytkownika
+
+        // Utworzenie aukcji
+        AuctionResponseDTO auctionResponseDTO = auctionFacade.createAuction(auctionInputDTO, itemIds, providerId);
         return new ResponseEntity<>(auctionResponseDTO, HttpStatus.CREATED);
     }
 
