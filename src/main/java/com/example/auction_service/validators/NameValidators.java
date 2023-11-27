@@ -13,4 +13,5 @@ public class NameValidators {
         return value.chars()
                 .allMatch(character -> Character.isLetterOrDigit(character) || Character.isSpaceChar(character));
     }
+
 }
