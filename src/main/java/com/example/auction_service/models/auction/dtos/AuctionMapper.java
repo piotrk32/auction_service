@@ -29,7 +29,8 @@ public class AuctionMapper {
                 .auctionDateEnd(auction.getAuctionDateEnd())
                 .isBuyNow(auction.getIsBuyNow())
                 .buyNowPrice(auction.getBuyNowPrice())
-                .isActive(auction.getIsActive())
+                .statusAuction(auction.getStatusAuction().name())
+                .currentBid(auction.getCurrentBid().getId())
                 .itemIds(itemIds) // Dodanie listy ID przedmiotów
                 .build();
     }
