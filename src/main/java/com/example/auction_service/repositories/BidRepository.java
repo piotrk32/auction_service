@@ -1,5 +1,6 @@
 package com.example.auction_service.repositories;
 
+import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.bid.Bid;
 import com.example.auction_service.models.bid.enums.BidStatus;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BidRepository extends JpaRepository<Bid, Long>, JpaSpecificationExecutor<Bid> {
@@ -24,5 +26,7 @@ public interface BidRepository extends JpaRepository<Bid, Long>, JpaSpecificatio
     Optional<Bid> findTopByAuctionIdAndBidStatusOrderByBidValueDesc(Long auctionId, BidStatus bidStatus);
 
 
+    Bid findTopByAuctionOrderByBidValueDesc(Auction auction);
 
+    List<Bid> findAllByAuctionOrderByBidValueDesc(Auction auction);
 }
