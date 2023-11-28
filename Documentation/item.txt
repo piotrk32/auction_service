@@ -1,0 +1,47 @@
+Dodawanie Nowego Przedmiotu:
+
+Pozwala dostawcom na dodawanie nowych przedmiotów do systemu.
+Metoda HTTP: POST
+Endpoint: /provider/items
+Body: Dane nowego przedmiotu.
+Aktualizacja Przedmiotu:
+
+Umożliwia dostawcom aktualizowanie informacji o istniejących przedmiotach.
+Metoda HTTP: PUT
+Endpoint: /provider/items/{itemId}
+Body: Zaktualizowane dane przedmiotu.
+Usuwanie Przedmiotu:
+
+Umożliwia dostawcom usunięcie przedmiotu z systemu.
+Metoda HTTP: DELETE
+Endpoint: /provider/items/{itemId}
+Pobieranie Szczegółów Przedmiotu:
+
+Umożliwia dostawcom przeglądanie szczegółów konkretnego przedmiotu.
+Metoda HTTP: GET
+Endpoint: /provider/items/{itemId}
+Lista Przedmiotów Dostawcy:
+
+Wyświetla listę wszystkich przedmiotów danego dostawcy.
+Metoda HTTP: GET
+Endpoint: /provider/items
+Przypisywanie Przedmiotów do Aukcji:
+
+Jak już wspomniano, pozwala na przypisanie przedmiotów do konkretnej aukcji.
+Metoda HTTP: POST
+Endpoint: /provider/items/auction/{auctionId}/assign-items
+Aktualizacja Stanu Przedmiotu:
+
+Umożliwia zmianę stanu przedmiotu (np. dostępny, zarezerwowany, sprzedany).
+Metoda HTTP: PATCH
+Endpoint: /provider/items/{itemId}/status
+Wyszukiwanie Przedmiotów:
+
+Umożliwia dostawcom wyszukiwanie przedmiotów na podstawie różnych kryteriów (np. nazwa, kategoria, cena).
+Metoda HTTP: GET
+Endpoint: /provider/items/search
+Zarządzanie Zdjęciami Przedmiotu:
+
+Umożliwia dodawanie, aktualizowanie lub usuwanie zdjęć przedmiotu.
+Metody HTTP: POST, PUT, DELETE
+Endpointy: /provider/items/{itemId}/images

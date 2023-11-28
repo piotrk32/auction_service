@@ -1,0 +1,44 @@
+1. Logowanie za pomocą Google OAuth2
+Użytkownik loguje się przez Google, a Twoja aplikacja otrzymuje kod autoryzacyjny.
+Metoda authorize w AuthenticationController wymienia kod autoryzacyjny na tokeny Google (GoogleTokenResponse), używając AuthenticationService.
+AuthenticationService weryfikuje token ID Google (GoogleIdToken) i ustawia sesję, tworząc ciasteczko (Cookie) z payloadem tokena.
+Użytkownik jest teraz uwierzytelniony w Twojej aplikacji z sesją opartą na ciasteczkach.
+2. Filtr Autentykacji Payload
+PayloadAuthenticationFilter jest filtrem, który sprawdza ciasteczko payload w każdym żądaniu HTTP.
+Jeśli ciasteczko istnieje, filtr wyciąga z niego email użytkownika i weryfikuje payload.
+Filtr sprawdza, czy token nie wygasł. Jeśli tak, odnawia sesję, odświeżając tokeny.
+Filtr pobiera szczegóły użytkownika z bazy danych (UserRepository) i ustawia kontekst bezpieczeństwa (SecurityContextHolder) z UsernamePasswordAuthenticationToken.
+3. Kontrola Dostępu
+SecurityConfig konfiguruje zabezpieczenia Spring Security.
+Określa politykę CORS, wyłącza CSRF i ustawia politykę tworzenia sesji na bezstanową (STATELESS).
+Konfiguruje autoryzację na podstawie ról i ścieżek dostępu. Na przykład, dostęp do ścieżek /provider/** wymaga roli PROVIDER.
+4. Obsługa Wyjątków
+FilterChainExceptionHandler przechwytuje wyjątki rzucane podczas przetwarzania filtrów i deleguje ich obsługę do HandlerExceptionResolver.
+5. Odświeżanie i Wylogowywanie
+AuthenticationService zawiera logikę odświeżania tokenów i wylogowywania użytkowników, w tym odwoływanie tokenów dostępu Google.
+6. Rejestracja i Zarządzanie Użytkownikami
+AuthenticationController zawiera endpointy do rejestracji użytkowników (klienci, dostawcy) oraz zarządzania danymi użytkownika.
+Przepływ Tokenów
+Logowanie: Użytkownik loguje się przez Google, aplikacja wymienia kod na tokeny Google.
+Ustawienie Sesji: Tokeny są używane do ustawienia sesji użytkownika w aplikacji.
+Autentykacja i Autoryzacja: Każde żądanie jest filtrowane przez PayloadAuthenticationFilter, który weryfikuje ciasteczko sesji i ustawia kontekst bezpieczeństwa.
+Odświeżanie Tokenów: Gdy token wygasa, jest automatycznie odświeżany.
+Wylogowanie: Usuwa sesję użytkownika i odwołuje tokeny Google.
+Uwagi
+Wszystkie żądania, poza zdefiniowanymi jako publiczne (np. dokumentacja Swagger), wymagają autentykacji.
+System używa JWT (JSON Web Tokens) i ciasteczek do zarządzania sesjami.
+Bezpieczeństwo jest oparte na rolach, z różnymi poziomami dostępu dla różnych typów użytkowników.
+
+
+Klient OAuth został utworzony
+Identyfikator klienta i klucz tajny zawsze są dostępne na stronie Dane logowania w sekcji Interfejsy API i usługi
+
+Dostęp OAuth jest ograniczony do użytkowników testowych  wymienionych na ekranie zgody OAuth.
+Identyfikator klienta
+381036476606-bd63e3tcdrtm4jl3ac78p767ah4uchu2.apps.googleusercontent.com
+Tajny klucz klienta
+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
+Data utworzenia
+22 listopada 2023 14:11:19 GMT+1
+Stan
+Włączono
