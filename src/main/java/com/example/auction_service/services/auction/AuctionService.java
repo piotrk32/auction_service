@@ -176,12 +176,17 @@ public class AuctionService {
 
     public Auction deactivateAuction(Long auctionId) {
         Auction auction = getAuctionById(auctionId);
-        if (auction != null) {
+
+        if (auction.getStatusAuction() == StatusAuction.ACTIVE) {
+            LocalDateTime now = LocalDateTime.now(); // Pobranie bieżącej daty i czasu
+
             auction.setStatusAuction(StatusAuction.CANCELED);
+            auction.setAuctionDateEnd(now); // Ustawienie daty zakończenia aukcji na bieżącą datę i czas
+
             return auctionRepository.save(auction);
         } else {
-            // Handle the case where the auction doesn't exist
-            throw new EntityNotFoundException("Auction ", "Auction not found with id: " + auctionId);
+            // Jeśli aukcja nie jest w stanie ACTIVE, rzucamy wyjątek lub obsługujemy inaczej
+            throw new IllegalStateException("Auction with id: " + auctionId + " is not in ACTIVE state and cannot be canceled.");
         }
     }
 
