@@ -31,9 +31,20 @@ public class ItemService {
     private final CustomerRepository customerRepository;
     private final AuctionRepository auctionRepository;
 
+//    public Item getItemById(Long itemId) {
+//        return itemRepository.findById(itemId)
+//                .orElseThrow(() -> new EntityNotFoundException("Item", "No item found with id: " + itemId));
+//    }
+
     public Item getItemById(Long itemId) {
-        return itemRepository.findById(itemId)
+        Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Item", "No item found with id: " + itemId));
+
+        if (item.getIsSold()) {
+            throw new IllegalStateException("Cannot perform operation on a sold item.");
+        }
+
+        return item;
     }
 
     public Item createItem(ItemInputDTO itemInputDTO, Provider provider) {

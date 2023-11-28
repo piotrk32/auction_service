@@ -149,7 +149,7 @@ public class ProviderItemController {
             ItemResponseDTO updatedItem = itemFacade.updateItemById(itemId, itemUpdateDTO);
             return ResponseEntity.ok(updatedItem);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("Item Not Found", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("Entity Not Found", e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal Server Error", e.getMessage()));
         }
