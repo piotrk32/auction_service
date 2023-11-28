@@ -1,6 +1,9 @@
 package com.example.auction_service.repositories;
 
+import com.example.auction_service.models.bid.Bid;
 import com.example.auction_service.models.item.Item;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +25,9 @@ public interface ItemRepository extends JpaRepository<Item, Long>, JpaSpecificat
 
     List<Item> findByItemNameContainingIgnoreCase(String nameFragment);
 
+    List<Item> findAllByCustomerId(Long customerId);
+
 //    List<Item> findByItemNameContainingIgnoreCaseAndAuction_IsActiveTrue(String nameFragment);
+
+//    Page<Item> findAllByCustomerId(Long customerId, PageRequest pageRequest);
 }

@@ -9,12 +9,11 @@ import com.example.auction_service.models.bid.enums.BidStatus;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.customer.dtos.CustomerInputDTO;
 import com.example.auction_service.models.customer.dtos.CustomerRequestDTO;
+import com.example.auction_service.models.item.Item;
+import com.example.auction_service.models.item.dtos.ItemResponseDTO;
 import com.example.auction_service.models.user.User;
 import com.example.auction_service.models.user.enums.Status;
-import com.example.auction_service.repositories.AuctionRepository;
-import com.example.auction_service.repositories.BidRepository;
-import com.example.auction_service.repositories.CustomerRepository;
-import com.example.auction_service.repositories.UserRepository;
+import com.example.auction_service.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class CustomerService {
     private final UserRepository userRepository;
     private final AuctionRepository auctionRepository;
     private final BidRepository bidRepository;
+    private final ItemRepository itemRepository;
     public Customer getCustomerById(Long customerId) {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new EntityNotFoundException("Customer", "No customer found with id: " + customerId));
@@ -129,6 +131,11 @@ public class CustomerService {
         // Zapisz zmiany w aukcji
         auctionRepository.saveAndFlush(auction);
     }
+
+//    public List<Item> findCustomerItems(Long customerId) {
+//        // Pobierz i zwróć wszystkie przedmioty nabyte przez klienta
+//        return itemRepository.findAllByCustomerId(customerId);
+//    }
 }
 
 
