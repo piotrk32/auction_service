@@ -119,7 +119,7 @@ public class CustomerService {
         auction.setBuyNowCustomer(customer);
 
         // Jeśli istnieje, zaktualizuj aktualną wygraną ofertę
-        Bid winningBid = bidRepository.findTopByAuctionIdAndBidStatusOrderByBidValueDesc(auctionId, BidStatus.ACTIVE)
+        Bid winningBid = bidRepository.findTopByAuctionIdAndBidStatusOrderByBidValueDesc(auctionId, BidStatus.BOOKED)
                 .orElse(null);
         if (winningBid != null) {
             winningBid.setBidStatus(BidStatus.WON);
