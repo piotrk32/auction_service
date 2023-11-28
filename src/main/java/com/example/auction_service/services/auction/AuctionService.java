@@ -34,10 +34,29 @@ public class AuctionService {
                 .orElseThrow(() -> new EntityNotFoundException("Auction", "No auction found with id: " + auctionId));
     }
 
+//    public void deleteAuctionById(Long auctionId) {
+//        Auction auction = getAuctionById(auctionId);
+//        auction.setStatusAuction(StatusAuction.DELETED);
+//        auctionRepository.saveAndFlush(auction);
+//    }
+
     public void deleteAuctionById(Long auctionId) {
         Auction auction = getAuctionById(auctionId);
-        auction.setStatusAuction(StatusAuction.DELETED);
-        auctionRepository.saveAndFlush(auction);
+        if (auction != null) {
+            // Ustawianie statusu aukcji na usunięty
+            auction.setStatusAuction(StatusAuction.DELETED);
+
+            // Odłączanie przedmiotów od aukcji
+            List<Item> items = itemRepository.findAllByAuctionId(auctionId);
+            for (Item item : items) {
+                item.setAuction(null); // Usuwanie powiązania z aukcją
+                itemRepository.save(item); // Zapisanie zmian w przedmiocie
+            }
+
+            auctionRepository.save(auction); // Zapisanie zmian w aukcji
+        } else {
+            throw new EntityNotFoundException("Auction ", "Auction not found with id: " + auctionId);
+        }
     }
 
     public Auction createAuction(AuctionInputDTO auctionInputDTO, Provider provider, List<Long> itemIds) {
