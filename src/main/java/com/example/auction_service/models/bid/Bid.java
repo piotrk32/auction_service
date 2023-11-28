@@ -41,12 +41,8 @@ public class Bid extends BasicEntity {
         this.customer = customer;
         this.auction = auction;
         this.bidValue = bidValue;
-        this.bidStatus = BidStatus.ACTIVE;
+        this.bidStatus = BidStatus.BOOKED;
     }
-
-
-
-
 
 
 }
