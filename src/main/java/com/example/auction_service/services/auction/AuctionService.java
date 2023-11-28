@@ -157,13 +157,22 @@ public class AuctionService {
 
     public Auction activateAuction(Long auctionId) {
         Auction auction = getAuctionById(auctionId);
-        if (auction != null) {
+
+        // Sprawdź, czy aukcja już nie jest aktywna
+        if (auction.getStatusAuction() != StatusAuction.ACTIVE) {
+            LocalDateTime now = LocalDateTime.now(); // Pobranie bieżącej daty i czasu
+
             auction.setStatusAuction(StatusAuction.ACTIVE);
-            return auctionRepository.save(auction);
+            auction.setIsBuyNow(false); // Wyłączenie opcji "Kup Teraz"
+            auction.setAuctionDate(now); // Ustawienie bieżącej daty i czasu jako daty rozpoczęcia aukcji
+            auction.setAuctionDateEnd(now.plusMinutes(auction.getDuration())); // Ustawienie daty zakończenia aukcji
+
+            auctionRepository.save(auction);
         } else {
-            // Handle the case where the auction doesn't exist
-            throw new EntityNotFoundException("Auction ", "Auction not found with id: " + auctionId);
+            // Obsługa sytuacji, gdy aukcja jest już aktywna
         }
+
+        return auction;
     }
 
     public Auction deactivateAuction(Long auctionId) {
