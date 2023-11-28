@@ -49,7 +49,6 @@ public class AuctionService {
         LocalDateTime auctionStartDate = auctionInputDTO.auctionDate();
         LocalDateTime auctionEndDate = auctionInputDTO.auctionDateEnd();
 
-//        LocalDateTime auctionEndDate = auctionInputDTO.auctionDate().plusMinutes(auctionInputDTO.duration());
         long durationInHours = java.time.Duration.between(auctionStartDate, auctionEndDate).toHours();
 
         Auction auction = new Auction(
