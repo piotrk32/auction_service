@@ -37,11 +37,12 @@ public class Bid extends BasicEntity {
     @Column(nullable = false)
     Boolean isWinning = false;
 
-    public Bid(Customer customer, Auction auction,  Double price, Currency currency, Double bidValue) {
+    public Bid(Customer customer, Auction auction, Double bidValue) {
         this.customer = customer;
         this.auction = auction;
         this.bidValue = bidValue;
         this.bidStatus = BidStatus.BOOKED;
+
     }
 
 
