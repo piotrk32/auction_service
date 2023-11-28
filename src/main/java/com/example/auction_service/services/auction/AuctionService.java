@@ -168,7 +168,7 @@ public class AuctionService {
 
             auctionRepository.save(auction);
         } else {
-            // Obsługa sytuacji, gdy aukcja jest już aktywna
+            throw new IllegalStateException("Auction with id: " + auctionId + " is already ACTIVE.");
         }
 
         return auction;
