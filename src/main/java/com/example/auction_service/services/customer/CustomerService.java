@@ -114,7 +114,7 @@ public class CustomerService {
                 .orElseThrow(() -> new EntityNotFoundException("Auction", "No auction found with id: " + auctionId));
 
         // Zaktualizuj stan aukcji, aby odzwierciedlić fakt dokonania zakupu
-        auction.setStatusAuction(StatusAuction.DONE);
+        auction.setStatusAuction(StatusAuction.FINISHED);
         auction.setIsBuyNowCompleted(true);
         auction.setBuyNowCustomer(customer);
 
