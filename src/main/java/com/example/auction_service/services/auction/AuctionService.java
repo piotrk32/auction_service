@@ -34,12 +34,6 @@ public class AuctionService {
                 .orElseThrow(() -> new EntityNotFoundException("Auction", "No auction found with id: " + auctionId));
     }
 
-//    public void deleteAuctionById(Long auctionId) {
-//        Auction auction = getAuctionById(auctionId);
-//        auction.setStatusAuction(StatusAuction.DELETED);
-//        auctionRepository.saveAndFlush(auction);
-//    }
-
     public void deleteAuctionById(Long auctionId) {
         Auction auction = getAuctionById(auctionId);
         if (auction != null) {
@@ -212,6 +206,11 @@ public class AuctionService {
     public Auction assignItemsToAuction(Long auctionId, List<Long> itemIds) {
         Auction auction = getAuctionById(auctionId);
 
+        // Sprawdź, czy status aukcji nie jest ACTIVE
+        if (auction.getStatusAuction() == StatusAuction.ACTIVE) {
+            throw new IllegalStateException("Cannot assign items to an active auction.");
+        }
+
         List<Item> items = itemRepository.findAllById(itemIds);
         if (items.size() != itemIds.size()) {
             throw new EntityNotFoundException("Item", "One or more items not found with provided IDs");
@@ -219,6 +218,7 @@ public class AuctionService {
 
         for (Item item : items) {
             item.setAuction(auction); // Przypisanie aukcji do przedmiotu
+            item.setIsBuyNowActive(false); // Ustawienie isBuyNowActive na false
             itemRepository.save(item); // Zapisanie zmian w przedmiocie
         }
         return auction;

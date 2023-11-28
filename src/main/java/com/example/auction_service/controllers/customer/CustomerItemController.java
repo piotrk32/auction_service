@@ -1,27 +1,27 @@
 package com.example.auction_service.controllers.customer;
 
 import com.example.auction_service.models.item.dtos.ItemPurchaseDTO;
-import com.example.auction_service.services.item.ItemService;
+import com.example.auction_service.services.item.ItemFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customer/item")
+@RequiredArgsConstructor
 @Tag(name = "Customer Item Controller", description = "Controller for managing item purchases by customers")
 public class CustomerItemController {
 
-    private final ItemService itemService;
+    private final ItemFacade itemFacade;
 
-    public CustomerItemController(ItemService itemService) {
-        this.itemService = itemService;
-    }
+
 
     @Operation(summary = "Buy item now", description = "Allows a customer to immediately purchase an item using the 'Buy Now' option")
     @ApiResponses(value = {
@@ -43,7 +43,7 @@ public class CustomerItemController {
     })
     @PostMapping("/buyNow/{itemId}")
     public ResponseEntity<ItemPurchaseDTO> buyItemNow(@PathVariable Long itemId, @RequestParam Long customerId) {
-        ItemPurchaseDTO purchaseDTO = itemService.buyNow(itemId, customerId);
+        ItemPurchaseDTO purchaseDTO = itemFacade.buyNow(itemId, customerId);
         return new ResponseEntity<>(purchaseDTO, HttpStatus.OK);
     }
 }
