@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long>, JpaSpecificationExecutor<Auction> {
@@ -26,5 +28,13 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, JpaSpec
 
     @Query("SELECT DISTINCT a FROM Auction a JOIN a.bidList b WHERE b.customer.id = :customerId")
     Page<Auction> findAllByCustomerIdWithBids(@Param("customerId") Long customerId, Pageable pageable);
+
+
+    List<Auction> findAllByStatusAuctionAndAuctionDateBefore(StatusAuction status, LocalDateTime dateTime);
+
+    List<Auction> findAllByStatusAuctionAndAuctionDateEndBefore(StatusAuction statusAuction, LocalDateTime endDateTime);
+
+
+
 
 }
