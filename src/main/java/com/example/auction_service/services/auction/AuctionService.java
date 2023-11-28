@@ -104,6 +104,17 @@ public class AuctionService {
         return auctionRepository.findAll(spec, pageRequest);
     }
 
+//    public Page<Auction> getAuctionsByProviderId(Long providerId, AuctionProviderRequestDTO auctionProviderRequestDTO) {
+//        PageRequest pageRequest = PageRequest.of(
+//                Integer.parseInt(auctionProviderRequestDTO.getPage()),
+//                Integer.parseInt(auctionProviderRequestDTO.getSize()),
+//                Sort.Direction.valueOf(auctionProviderRequestDTO.getDirection()),
+//                auctionProviderRequestDTO.getSortParam());
+//
+//        // Załóżmy, że chcesz szukać aktywnych aukcji
+//        return auctionRepository.findAllByProviderIdAndStatusAuction(providerId, StatusAuction.FINISHED, pageRequest);
+//    }
+
     public Page<Auction> getAuctionsByProviderId(Long providerId, AuctionProviderRequestDTO auctionProviderRequestDTO) {
         PageRequest pageRequest = PageRequest.of(
                 Integer.parseInt(auctionProviderRequestDTO.getPage()),
@@ -111,8 +122,9 @@ public class AuctionService {
                 Sort.Direction.valueOf(auctionProviderRequestDTO.getDirection()),
                 auctionProviderRequestDTO.getSortParam());
 
-        // Załóżmy, że chcesz szukać aktywnych aukcji
-        return auctionRepository.findAllByProviderIdAndStatusAuction(providerId, StatusAuction.ACTIVE, pageRequest);
+        StatusAuction statusAuction = StatusAuction.valueOf(auctionProviderRequestDTO.getStatusAuction().toUpperCase());
+
+        return auctionRepository.findAllByProviderIdAndStatusAuction(providerId, statusAuction, pageRequest);
     }
     public Auction updateAuctionById(Long auctionId, AuctionInputDTO auctionInputDTO, List<Long> newItemIds) {
         if (!Currency.isValid(String.valueOf(auctionInputDTO.currency()))) {
@@ -122,7 +134,6 @@ public class AuctionService {
         auction.setAuctionName(auctionInputDTO.auctionName());
         auction.setDescription(auctionInputDTO.description());
         auction.setPrice(auctionInputDTO.price());
-//        auction.setDuration(auctionInputDTO.duration());
         auction.setAuctionDate(auctionInputDTO.auctionDate());
         auction.setAuctionDateEnd(auctionInputDTO.auctionDateEnd());
         auction.setIsBuyNow(auctionInputDTO.isBuyNow());

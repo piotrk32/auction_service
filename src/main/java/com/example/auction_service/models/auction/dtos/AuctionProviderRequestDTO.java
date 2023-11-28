@@ -26,4 +26,6 @@ public class AuctionProviderRequestDTO {
     @Schema(example = "DESC")
     @PageDirection
     private String direction = "ASC";
+    @Schema(example = "ACTIVE")
+    private String statusAuction;
 }
