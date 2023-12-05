@@ -170,6 +170,12 @@ public class AuctionService {
     public Auction activateAuction(Long auctionId) {
         Auction auction = getAuctionById(auctionId);
 
+        // Sprawdź, czy aukcja ma przypisane jakieś przedmioty
+        List<Item> items = itemRepository.findAllByAuction(auction);
+        if (items == null || items.isEmpty()) {
+            throw new IllegalStateException("Cannot activate auction without items.");
+        }
+
         // Sprawdź, czy aukcja już nie jest aktywna
         if (auction.getStatusAuction() != StatusAuction.ACTIVE) {
             LocalDateTime now = LocalDateTime.now(); // Pobranie bieżącej daty i czasu
