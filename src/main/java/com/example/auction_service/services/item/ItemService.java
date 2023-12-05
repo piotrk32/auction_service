@@ -109,6 +109,8 @@ public class ItemService {
         // Ustawienie przedmiotu jako sprzedanego i przypisanie go do klienta
         item.setIsSold(true);
         item.setCustomer(customer); // Przypisanie klienta do przedmiotu
+        item.setIsBuyNowActive(false); // Wyłączenie opcji "Kup Teraz" dla przedmiotu
+
         itemRepository.save(item);
 
         // Tworzenie i zwracanie DTO
