@@ -1,6 +1,7 @@
 package com.example.auction_service.models.auction.dtos;
 
 import com.example.auction_service.models.auction.enums.Currency;
+import com.example.auction_service.validators.auction.ValidAuctionDates;
 import com.example.auction_service.validators.item.ItemValidationGroups;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 
+@ValidAuctionDates
 public record AuctionInputDTO(
         @NotBlank(message = "Auction name field must be filled in.")
         @Length(min = 3, message = "Auction name must be at least 3 characters.")

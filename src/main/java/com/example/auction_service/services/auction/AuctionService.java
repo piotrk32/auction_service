@@ -223,6 +223,11 @@ public class AuctionService {
         }
 
         for (Item item : items) {
+            // Sprawdź, czy przedmiot nie został już sprzedany
+            if (item.getIsSold()) {
+                throw new IllegalStateException("Cannot assign sold item to an auction. Item ID: " + item.getId());
+            }
+
             item.setAuction(auction); // Przypisanie aukcji do przedmiotu
             item.setIsBuyNowActive(false); // Ustawienie isBuyNowActive na false
             itemRepository.save(item); // Zapisanie zmian w przedmiocie
