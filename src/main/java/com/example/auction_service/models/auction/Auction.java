@@ -30,7 +30,6 @@ public class Auction extends BasicEntity {
     @OneToMany(mappedBy = "auction", fetch = FetchType.LAZY)
     List<Bid> bidList;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "provider_id", referencedColumnName = "id")
     Provider provider;
@@ -38,7 +37,6 @@ public class Auction extends BasicEntity {
     String auctionName;
     String description;
     @Column(nullable = false)
-//    Boolean isActive;
     Integer duration;
     Double price;
     String category;
@@ -68,8 +66,6 @@ public class Auction extends BasicEntity {
 
     @OneToMany(mappedBy = "auction")
     private List<Item> items;
-
-
 
     public Auction(Provider provider, String auctionName, String category, String description, Integer duration,
                    Double price, Currency currency, Bid currentBid, LocalDateTime auctionDate,

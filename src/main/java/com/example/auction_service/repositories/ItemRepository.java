@@ -5,6 +5,7 @@ import com.example.auction_service.models.bid.Bid;
 import com.example.auction_service.models.item.Item;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long>, JpaSpecificationExecutor<Item> {
 
-    List<Item> findAllByProviderId(Long providerId);
+    Page<Item> findAllByProviderId(Long providerId, Pageable pageable);
 
     List<Item> findAllByAuctionId(Long auctionId);
     @Query("""
@@ -29,6 +30,8 @@ public interface ItemRepository extends JpaRepository<Item, Long>, JpaSpecificat
     List<Item> findAllByCustomerId(Long customerId);
 
     List<Item> findAllByAuction(Auction auction);
+
+//    Page<Item> findAllByProviderIdAndIsActiveTrue(Long providerId, PageRequest pageRequest);
 
 //    List<Item> findByItemNameContainingIgnoreCaseAndAuction_IsActiveTrue(String nameFragment);
 

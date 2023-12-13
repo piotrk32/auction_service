@@ -31,7 +31,7 @@ public class AuctionMapper {
                 .auctionDate(auction.getAuctionDate())
                 .auctionDateEnd(auction.getAuctionDateEnd())
                 .isBuyNow(auction.getIsBuyNow())
-                .buyNowPrice(auction.getIsBuyNow() ? auction.getBuyNowPrice() : null) // Jeśli isBuyNow jest false, buyNowPrice może być null
+                .buyNowPrice(auction.getIsBuyNow() ? auction.getBuyNowPrice() : null)
                 .statusAuction(auction.getStatusAuction().name())
                 .currentBid(currentBidId)
                 .itemIds(itemIds) // Dodanie listy ID przedmiotów

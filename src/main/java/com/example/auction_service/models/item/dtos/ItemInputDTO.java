@@ -18,7 +18,8 @@ public record ItemInputDTO(
         Boolean isBuyNowActive,
         Boolean isSold,
         @Min(value = 0, message = "Buy now price must not be less than or equal to zero.")
-        Double buyNowPrice ){
+        Double buyNowPrice,
+        String currency){
 
 }
 

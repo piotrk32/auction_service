@@ -33,7 +33,7 @@ public class ItemFacade {
         itemService.deleteItemById(itemId);
     }
 
-    public ItemResponseDTO updateItemById(Long itemId, ItemUpdateDTO itemInputDTO) {
+    public ItemResponseDTO updateItemById(Long itemId, ItemInputDTO itemInputDTO) {
         Item updatedItem = itemService.updateItemById(itemId, itemInputDTO);
         return mapToItemResponseDTO(updatedItem);
     }
@@ -55,6 +55,11 @@ public class ItemFacade {
 
     public void removeItemFromAuction(Long auctionId, Long itemId) {
         itemService.removeItemFromAuction(auctionId, itemId);
+    }
+
+
+    public Page<ItemResponseDTO> getItemsByProviderId(Long providerId, ItemProviderRequestDTO itemProviderRequestDTO) {
+        return itemService.getItemsByProviderId(providerId, itemProviderRequestDTO).map(ItemMapper::mapToItemResponseDTO);
     }
 
     //TODO enpointy do ProviderItemController oraz ItemController

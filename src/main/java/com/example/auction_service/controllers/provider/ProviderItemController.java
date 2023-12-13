@@ -4,19 +4,24 @@ import com.example.auction_service.exceptions.EntityNotFoundException;
 import com.example.auction_service.exceptions.ErrorMessage;
 import com.example.auction_service.models.auction.dtos.AuctionResponseDTO;
 import com.example.auction_service.models.item.dtos.ItemInputDTO;
+import com.example.auction_service.models.item.dtos.ItemProviderRequestDTO;
 import com.example.auction_service.models.item.dtos.ItemResponseDTO;
 import com.example.auction_service.models.item.dtos.ItemUpdateDTO;
 import com.example.auction_service.services.auction.AuctionFacade;
 import com.example.auction_service.services.item.ItemFacade;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -143,16 +148,12 @@ public class ProviderItemController {
                             schema = @Schema(implementation = ErrorMessage.class)
                     ))
     })
-    @PutMapping("/{itemId}")
-    public ResponseEntity<?> updateItem(@PathVariable Long itemId, @Validated @RequestBody ItemUpdateDTO itemUpdateDTO) {
-        try {
-            ItemResponseDTO updatedItem = itemFacade.updateItemById(itemId, itemUpdateDTO);
-            return ResponseEntity.ok(updatedItem);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("Entity Not Found", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal Server Error", e.getMessage()));
-        }
+    @PutMapping("/update/{itemId}")
+//    @PreAuthorize("(@fineGrainServices.compareSecurityEmailAndEmailByItemId(#itemId))")
+    public ResponseEntity<ItemResponseDTO> updateItemById(@PathVariable Long itemId,
+                                                                   @RequestBody ItemInputDTO itemInputDTO) {
+        ItemResponseDTO updatedItem = itemFacade.updateItemById(itemId, itemInputDTO);
+        return ResponseEntity.ok(updatedItem);
     }
 
     @Operation(summary = "Delete existing item", description = "Deletes an item based on the provided ID")
@@ -175,7 +176,7 @@ public class ProviderItemController {
                     )
             )
     })
-    @DeleteMapping("/{itemId}")
+    @DeleteMapping("/delete/{itemId}")
     public ResponseEntity<?> deleteItemById(@PathVariable Long itemId) {
         try {
             itemFacade.deleteItemById(itemId);
@@ -185,6 +186,32 @@ public class ProviderItemController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal Server Error", e.getMessage()));
         }
+    }
+
+    @Operation(summary = "Get all provider's offerings", description = "Gets all offerings  with matching provider's id")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successful item acquisition",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(
+                                    schema = @Schema(implementation = ItemResponseDTO.class)
+                            )
+                    )),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad Request - temporally returns map of errors or ErrorMessage",
+                    content = @Content(
+                            mediaType = "application/json"
+                    ))
+    })
+    @GetMapping("/get-by-provider/{providerId}")
+    @PreAuthorize("(@fineGrainServices.getCurrentUserId()==#providerId)")
+    public ResponseEntity<Page<ItemResponseDTO>> getItemsByProvider(@PathVariable Long providerId,
+                                                                    @ModelAttribute @Valid ItemProviderRequestDTO itemProviderRequestDTO) {
+        Page<ItemResponseDTO> itemResponseDTOPage = itemFacade.getItemsByProviderId(providerId, itemProviderRequestDTO);
+        return ResponseEntity.ok(itemResponseDTOPage);
     }
 
 

@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FineGrainServices {
     private final UserService userService;
-//    private final ReservationService reservationService;
-//    private final WorkHourService workHourService;
     private final AuctionService auctionService;
 
     public String getUserEmail() {
@@ -32,30 +30,10 @@ public class FineGrainServices {
         return getUserEmail().equals(addressOwnerEmail);
     }
 
-//    public boolean compareSecurityCustomerEmailAndEmailByReservationId(Long reservationId) {
-//        String reservationCustomerEmail = reservationService.getCustomerEmailByReservationId(reservationId);
-//        return getUserEmail().equals(reservationCustomerEmail);
-//    }
-
-//    public boolean compareSecurityCustomerOrProviderEmailAndEmailByReservationId(Long reservationId) {
-//        String reservationCustomerEmail = reservationService.getCustomerEmailByReservationId(reservationId);
-//        String reservationProviderEmail = reservationService.getProviderEmailByReservationId(reservationId);
-//        return getUserEmail().equals(reservationCustomerEmail) || getUserEmail().equals(reservationProviderEmail);
-//    }
-
-//    public boolean compareSecurityProviderEmailAndEmailByReservationId(Long reservationId) {
-//        String reservationCustomerEmail = reservationService.getProviderEmailByReservationId(reservationId);
-//        return getUserEmail().equals(reservationCustomerEmail);
-//    }
-
     public boolean compareSecurityEmailAndEmailByAuctionId(Long auctionId) {
         String reservationCustomerEmail = auctionService.getProviderEmailByAuctionId(auctionId);
         return getUserEmail().equals(reservationCustomerEmail);
     }
 
-//    public boolean compareSecurityEmailAndEmailByWorkHourId(Long workHourId) {
-//        String addressOwnerEmail = workHourService.getProviderEmailByWorkHourId(workHourId);
-//        return getUserEmail().equals(addressOwnerEmail);
-//    }
 
 }

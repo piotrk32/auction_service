@@ -37,17 +37,15 @@ public class AuctionService {
     public void deleteAuctionById(Long auctionId) {
         Auction auction = getAuctionById(auctionId);
         if (auction != null) {
-            // Ustawianie statusu aukcji na usunięty
             auction.setStatusAuction(StatusAuction.DELETED);
 
-            // Odłączanie przedmiotów od aukcji
             List<Item> items = itemRepository.findAllByAuctionId(auctionId);
             for (Item item : items) {
-                item.setAuction(null); // Usuwanie powiązania z aukcją
-                itemRepository.save(item); // Zapisanie zmian w przedmiocie
+                item.setAuction(null);
+                itemRepository.save(item);
             }
 
-            auctionRepository.save(auction); // Zapisanie zmian w aukcji
+            auctionRepository.save(auction);
         } else {
             throw new EntityNotFoundException("Auction ", "Auction not found with id: " + auctionId);
         }
@@ -77,10 +75,8 @@ public class AuctionService {
                 auctionInputDTO.price()
         );
 
-        // Najpierw zapisz aukcję
         Auction savedAuction = auctionRepository.saveAndFlush(auction);
 
-        // Następnie przypisz przedmioty do zapisanej aukcji
         assignItemsToAuction(savedAuction.getId(), itemIds);
 
         return savedAuction; // Zwróć zapisaną aukcję

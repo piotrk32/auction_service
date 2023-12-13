@@ -5,8 +5,6 @@ import com.example.auction_service.models.address.Address;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.customer.dtos.CustomerInputDTO;
 import com.example.auction_service.models.customer.dtos.CustomerResponseDTO;
-import com.example.auction_service.models.item.Item;
-import com.example.auction_service.models.item.dtos.ItemResponseDTO;
 import com.example.auction_service.models.user.User;
 import com.example.auction_service.models.user.enums.Status;
 import com.example.auction_service.services.address.AddressService;

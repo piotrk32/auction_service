@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/common/user")
+@RequestMapping("/common")
 @Tag(name = "Common User Controller",
         description = "Functionalities intended for the customers and provider")
 public class UserController {

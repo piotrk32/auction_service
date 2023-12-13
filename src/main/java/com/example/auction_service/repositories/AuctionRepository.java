@@ -23,20 +23,16 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, JpaSpec
         """)
     Optional<String> getProviderEmailByAuctionId(@Param("auctionId") Long auctionId);
 
-
-
     Page<Auction> findAllByProviderIdAndStatusAuction(Long providerId, StatusAuction statusAuction, PageRequest pageRequest);
 
     @Query("SELECT DISTINCT a FROM Auction a JOIN a.bidList b WHERE b.customer.id = :customerId")
     Page<Auction> findAllByCustomerIdWithBids(@Param("customerId") Long customerId, Pageable pageable);
-
 
     List<Auction> findAllByStatusAuctionAndAuctionDateBefore(StatusAuction status, LocalDateTime dateTime);
 
     List<Auction> findAllByStatusAuctionAndAuctionDateEndBefore(StatusAuction statusAuction, LocalDateTime endDateTime);
 
     Page<Auction> findAllByProviderIdAndStatusAuction(Long providerId, StatusAuction statusAuction, Pageable pageable);
-
 
     List<Auction> findAllByStatusAuction(StatusAuction statusAuction);
 }

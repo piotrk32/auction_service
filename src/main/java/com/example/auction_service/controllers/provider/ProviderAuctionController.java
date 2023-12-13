@@ -55,15 +55,10 @@ public class ProviderAuctionController {
                     ))
     })
     @PostMapping("")
-// @PreAuthorize(...) - jeśli potrzebujesz autoryzacji
     public ResponseEntity<AuctionResponseDTO> createAuction(
             @RequestBody @Valid AuctionInputDTO auctionInputDTO,
             @RequestParam(required = false) List<Long> itemIds) {
-
-        // Pobranie identyfikatora zalogowanego dostawcy
-        Long providerId = fineGrainServices.getCurrentUserId(); // Zakładając, że ta metoda istnieje i zwraca ID zalogowanego użytkownika
-
-        // Utworzenie aukcji
+        Long providerId = fineGrainServices.getCurrentUserId();
         AuctionResponseDTO auctionResponseDTO = auctionFacade.createAuction(auctionInputDTO, itemIds, providerId);
         return new ResponseEntity<>(auctionResponseDTO, HttpStatus.CREATED);
     }

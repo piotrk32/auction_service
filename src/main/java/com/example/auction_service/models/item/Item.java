@@ -1,6 +1,7 @@
 package com.example.auction_service.models.item;
 
 import com.example.auction_service.models.auction.Auction;
+import com.example.auction_service.models.item.enums.Currency;
 import com.example.auction_service.models.basic.BasicEntity;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.provider.Provider;
@@ -10,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+
+
 
 @Entity
 @Table(name = "items")
@@ -38,9 +41,11 @@ public class Item extends BasicEntity {
     Double buyNowPrice; // Cena Kup Teraz
     Boolean isBuyNowActive; // Czy opcja Kup Teraz jest aktywna
     Boolean isSold;
+    @Enumerated(EnumType.STRING)
+    Currency currency;
 
     public Item(Provider provider, String itemName, String description, Double startingPrice,
-                String imageUrl, Boolean isBuyNowActive, Double buyNowPrice, Boolean isSold) {
+                String imageUrl, Boolean isBuyNowActive, Double buyNowPrice, Boolean isSold, Currency currency) {
         this.provider = provider;
         this.itemName = itemName;
         this.description = description;
@@ -48,6 +53,7 @@ public class Item extends BasicEntity {
         this.imageUrl = imageUrl;
         this.isBuyNowActive = isBuyNowActive;
         this.buyNowPrice = buyNowPrice;
-        this.isSold = isSold;
+        this.currency = currency;
+        this.isSold = false;
     }
 }

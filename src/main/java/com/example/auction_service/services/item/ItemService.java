@@ -3,13 +3,10 @@ package com.example.auction_service.services.item;
 import com.example.auction_service.exceptions.EntityNotFoundException;
 import com.example.auction_service.exceptions.auction.InvalidCurrencyException;
 import com.example.auction_service.models.auction.Auction;
-import com.example.auction_service.models.auction.enums.Currency;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.item.Item;
-import com.example.auction_service.models.item.dtos.ItemInputDTO;
-import com.example.auction_service.models.item.dtos.ItemPurchaseDTO;
-import com.example.auction_service.models.item.dtos.ItemRequestDTO;
-import com.example.auction_service.models.item.dtos.ItemUpdateDTO;
+import com.example.auction_service.models.item.dtos.*;
+import com.example.auction_service.models.item.enums.Currency;
 import com.example.auction_service.models.provider.Provider;
 import com.example.auction_service.repositories.AuctionRepository;
 import com.example.auction_service.repositories.CustomerRepository;
@@ -20,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 
 import java.util.Optional;
 
@@ -49,10 +47,8 @@ public class ItemService {
 
     public Item createItem(ItemInputDTO itemInputDTO, Provider provider) {
 
-//        if (!Currency.isValid(itemInputDTO.currency())) {
-//            throw new InvalidCurrencyException("currency", "Invalid currency: " + itemInputDTO.currency());
-//        }
 
+        Currency currency = Currency.valueOf(itemInputDTO.currency());
         Item item = new Item(provider,
                 itemInputDTO.itemName(),
                 itemInputDTO.description(),
@@ -60,31 +56,36 @@ public class ItemService {
                 itemInputDTO.imageUrl(),
                 itemInputDTO.isBuyNowActive(),
                 itemInputDTO.buyNowPrice(),
-                itemInputDTO.isSold()
-        );
+                itemInputDTO.isSold(),
+                currency);
 
         return itemRepository.saveAndFlush(item);
     }
 
-    public Item updateItemById(Long itemId, ItemUpdateDTO itemUpdateDTO) {
+    public Item updateItemById(Long itemId, ItemInputDTO itemInputDTO) {
+
         Item item = getItemById(itemId);
 
-        item.setItemName(itemUpdateDTO.itemName());
-        item.setDescription(itemUpdateDTO.description());
-        item.setImageUrl(itemUpdateDTO.imageUrl());
-        item.setIsBuyNowActive(itemUpdateDTO.isBuyNowActive());
-        if (itemUpdateDTO.isBuyNowActive() && (itemUpdateDTO.buyNowPrice() == null || itemUpdateDTO.buyNowPrice() < 0)) {
+        item.setItemName(itemInputDTO.itemName());
+        item.setDescription(itemInputDTO.description());
+        item.setImageUrl(itemInputDTO.imageUrl());
+        item.setIsBuyNowActive(itemInputDTO.isBuyNowActive());
+        if (itemInputDTO.isBuyNowActive() && (itemInputDTO.buyNowPrice() == null || itemInputDTO.buyNowPrice() < 0)) {
             throw new IllegalArgumentException("Buy now price must be provided when buy now is active");
         }
-        item.setStartingPrice(itemUpdateDTO.startingPrice());
-        item.setBuyNowPrice(itemUpdateDTO.buyNowPrice());
+
+        Currency currency = Currency.valueOf(itemInputDTO.currency());
+        item.setCurrency(currency);
+        item.setStartingPrice(itemInputDTO.startingPrice());
+        item.setBuyNowPrice(itemInputDTO.buyNowPrice());
 
         return itemRepository.saveAndFlush(item);
     }
 
     public void deleteItemById(Long itemId) {
         Item item = getItemById(itemId);
-        itemRepository.delete(item);
+        item.setIsSold(true);
+        itemRepository.saveAndFlush(item);
     }
 
     public ItemPurchaseDTO buyNow(Long itemId, Long customerId) {
@@ -184,5 +185,17 @@ public class ItemService {
             throw new RuntimeException("Auction or Item not found");
         }
     }
+
+    public Page<Item> getItemsByProviderId(Long providerId, ItemProviderRequestDTO itemProviderRequestDTO) {
+        PageRequest pageRequest = PageRequest.of(
+                Integer.parseInt(itemProviderRequestDTO.getPage()),
+                Integer.parseInt(itemProviderRequestDTO.getSize()),
+                Sort.Direction.valueOf(itemProviderRequestDTO.getDirection()),
+                itemProviderRequestDTO.getSortParam());
+
+        // Pass the pageRequest object to the repository method
+        return itemRepository.findAllByProviderId(providerId, pageRequest);
+    }
+
 }
 

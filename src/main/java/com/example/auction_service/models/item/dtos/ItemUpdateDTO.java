@@ -1,5 +1,6 @@
 package com.example.auction_service.models.item.dtos;
 
+import com.example.auction_service.models.auction.enums.Currency;
 import com.example.auction_service.validators.item.ItemValidationGroups;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -35,7 +36,9 @@ public record ItemUpdateDTO(
         Boolean isSold,
 
         @Min(value = 0, message = "Buy Now price must not be less than or equal to zero.")
-        Double buyNowPrice
+        Double buyNowPrice,
+        String currency
+
 
 
 ) {
