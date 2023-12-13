@@ -140,7 +140,7 @@ public class ProviderAuctionController {
                             mediaType = "application/json"
                     ))
     })
-    @GetMapping("/provider/{providerId}")
+    @GetMapping("/all/{providerId}")
     public ResponseEntity<Page<AuctionResponseDTO>> getAuctionsByProvider(@PathVariable Long providerId, AuctionProviderRequestDTO auctionProviderRequestDTO) {
         Page<AuctionResponseDTO> auctions = auctionFacade.getAuctionsByProviderId(providerId, auctionProviderRequestDTO);
         return new ResponseEntity<>(auctions, HttpStatus.OK);
