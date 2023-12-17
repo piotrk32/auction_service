@@ -7,7 +7,8 @@ import com.example.auction_service.models.bid.Bid;
 public class BidMapper {
 
     public static BidResponseDTO mapToBidResponseDTO(Bid bid) {
-        return BidResponseDTO.builder()
+        return BidResponseDTO
+                .builder()
                 .bidId(bid.getId())
                 .customerId(bid.getCustomer().getId())
                 .customerEmail(bid.getCustomer().getEmail())

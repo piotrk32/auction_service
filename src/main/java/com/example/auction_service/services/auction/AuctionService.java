@@ -60,8 +60,6 @@ public class AuctionService {
         LocalDateTime auctionStartDate = auctionInputDTO.auctionDate();
         LocalDateTime auctionEndDate = auctionInputDTO.auctionDateEnd();
 
-        long durationInHours = java.time.Duration.between(auctionStartDate, auctionEndDate).toHours();
-
         Auction auction = new Auction(
                 provider,
                 auctionInputDTO.auctionName(),
@@ -130,30 +128,33 @@ public class AuctionService {
                 Sort.Direction.valueOf(auctionProviderRequestDTO.getDirection()),
                 auctionProviderRequestDTO.getSortParam());
 
-        StatusAuction statusAuction = StatusAuction.valueOf(auctionProviderRequestDTO.getStatusAuction().toUpperCase());
-
-        return auctionRepository.findAllByProviderIdAndStatusAuction(providerId, statusAuction, pageRequest);
+        return auctionRepository.findAllByProviderId(providerId,  pageRequest);
     }
     public Auction updateAuctionById(Long auctionId, AuctionInputDTO auctionInputDTO, List<Long> newItemIds) {
-        if (!Currency.isValid(String.valueOf(auctionInputDTO.currency()))) {
-            throw new InvalidCurrencyException("currency", "Invalid currency: " + auctionInputDTO.currency());
-        }
         Auction auction = getAuctionById(auctionId);
+
         auction.setAuctionName(auctionInputDTO.auctionName());
         auction.setDescription(auctionInputDTO.description());
         auction.setPrice(auctionInputDTO.price());
         auction.setAuctionDate(auctionInputDTO.auctionDate());
         auction.setAuctionDateEnd(auctionInputDTO.auctionDateEnd());
         auction.setIsBuyNow(auctionInputDTO.isBuyNow());
+
+        // Walidacja ceny "buy now" w kontekście aktywacji opcji "buy now"
+        if (auctionInputDTO.isBuyNow() && (auctionInputDTO.buyNowPrice() == null || auctionInputDTO.buyNowPrice() <= 0)) {
+            throw new IllegalArgumentException("Buy now price must be provided and positive when buy now is active");
+        }
         auction.setBuyNowPrice(auctionInputDTO.buyNowPrice());
+
         auction.setCategory(auctionInputDTO.category());
 
         Currency currency = Currency.valueOf(String.valueOf(auctionInputDTO.currency()));
         auction.setCurrency(currency);
 
-//        auction.setStatusAuction(StatusAuction.NOT_STARTED);
-
-        assignItemsToAuction(auctionId, newItemIds);
+        if (newItemIds != null && !newItemIds.isEmpty()) {
+            // Jeśli jest, przypisz nowe przedmioty do aukcji
+            assignItemsToAuction(auctionId, newItemIds);
+        }
 
         return auctionRepository.saveAndFlush(auction);
     }

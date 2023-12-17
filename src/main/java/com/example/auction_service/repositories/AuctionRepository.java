@@ -35,4 +35,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, JpaSpec
     Page<Auction> findAllByProviderIdAndStatusAuction(Long providerId, StatusAuction statusAuction, Pageable pageable);
 
     List<Auction> findAllByStatusAuction(StatusAuction statusAuction);
+
+    Page<Auction> findAllByProviderId(Long providerId, PageRequest pageRequest);
+
 }

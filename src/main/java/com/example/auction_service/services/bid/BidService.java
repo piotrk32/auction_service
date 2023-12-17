@@ -2,16 +2,22 @@ package com.example.auction_service.services.bid;
 
 import com.example.auction_service.exceptions.EntityNotFoundException;
 import com.example.auction_service.models.auction.Auction;
+import com.example.auction_service.models.auction.dtos.AuctionProviderRequestDTO;
 import com.example.auction_service.models.auction.enums.StatusAuction;
 import com.example.auction_service.models.bid.Bid;
 import com.example.auction_service.models.bid.dtos.BidInputDTO;
 import com.example.auction_service.models.bid.dtos.BidMapper;
+import com.example.auction_service.models.bid.dtos.BidRequestDTO;
 import com.example.auction_service.models.bid.dtos.BidResponseDTO;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.repositories.AuctionRepository;
 import com.example.auction_service.repositories.BidRepository;
 import com.example.auction_service.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -87,6 +93,17 @@ public class BidService {
             newBid.setIsWinning(true);
             bidRepository.save(newBid);
         }
+    }
+
+
+    public Page<Bid> getBidsForAuction(Long auctionId, BidRequestDTO bidRequestDTO) {
+        PageRequest pageRequest = PageRequest.of(
+                Integer.parseInt(bidRequestDTO.getPage()),
+                Integer.parseInt(bidRequestDTO.getSize()),
+                Sort.Direction.valueOf(bidRequestDTO.getDirection()),
+                bidRequestDTO.getSortParam());
+
+        return bidRepository.findAllByAuctionId(auctionId,  pageRequest);
     }
 
 
