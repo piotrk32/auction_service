@@ -7,6 +7,7 @@ public record ItemPurchaseDTO(
         Long providerId,
         String itemName,
         Double buyNowPrice,
+        Boolean isBuyNowActive,
         Boolean isSold) {
 
     @Builder

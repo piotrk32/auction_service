@@ -121,6 +121,7 @@ public class ItemService {
                 .itemName(item.getItemName())
                 .buyNowPrice(item.getBuyNowPrice())
                 .isSold(item.getIsSold())
+                .isBuyNowActive(item.getIsBuyNowActive())
                 .build();
     }
     public Page<Item> getItems(ItemRequestDTO itemRequestDTO) {

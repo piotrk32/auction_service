@@ -5,11 +5,16 @@ import com.example.auction_service.models.address.Address;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.customer.dtos.CustomerInputDTO;
 import com.example.auction_service.models.customer.dtos.CustomerResponseDTO;
+import com.example.auction_service.models.item.dtos.ItemMapper;
+import com.example.auction_service.models.item.dtos.ItemRequestDTO;
+import com.example.auction_service.models.item.dtos.ItemResponseDTO;
 import com.example.auction_service.models.user.User;
 import com.example.auction_service.models.user.enums.Status;
 import com.example.auction_service.services.address.AddressService;
+import com.example.auction_service.services.item.ItemService;
 import com.example.auction_service.services.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,6 +28,7 @@ public class CustomerFacade {
     private final CustomerService customerService;
     private final UserService userService;
     private final AddressService addressService;
+    private final ItemService itemService;
 
     public CustomerResponseDTO createCustomer(CustomerInputDTO customerInputDTO, String email) {
         User user = userService.getUserByEmail(email);
@@ -48,8 +54,8 @@ public class CustomerFacade {
 
 
 
-//    public List<ItemResponseDTO> findCustomerItems(Long customerId) {
-//        return mapT.findCustomerItems(customerId);
-//    }
+    public Page<ItemResponseDTO> getItems(ItemRequestDTO itemRequestDTO) {
+        return itemService.getItems(itemRequestDTO).map(ItemMapper::mapToItemResponseDTO);
+    }
 
 }
