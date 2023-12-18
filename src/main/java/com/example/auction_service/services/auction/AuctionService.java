@@ -91,23 +91,23 @@ public class AuctionService {
         spec = spec.and((root, query, criteriaBuilder) ->
                 criteriaBuilder.isTrue(root.get("isActive")));
 
-        if (auctionRequestDTO.getAuctionNameSearch() != null) {
-            spec = spec.and(AuctionSpecification.auctionNameContains(auctionRequestDTO.getAuctionNameSearch()));
-        }
-        if (auctionRequestDTO.getPriceFrom() != null) {
-            spec = spec.and(AuctionSpecification.priceGreaterThanOrEqual(auctionRequestDTO.getPriceFrom()));
-        }
-        if (auctionRequestDTO.getPriceTo() != null) {
-            spec = spec.and(AuctionSpecification.priceLessThanOrEqual(auctionRequestDTO.getPriceTo()));
-        }
-        if (auctionRequestDTO.getProviderId() != null) {
-            spec = spec.and(AuctionSpecification.providerIdEquals(auctionRequestDTO.getProviderId()));
-        }
-        if (auctionRequestDTO.getAuctionCategorySearch() != null) {
-            spec = spec.and(AuctionSpecification.auctionNameContains(auctionRequestDTO.getAuctionCategorySearch()));
-        }
+//        if (auctionRequestDTO.getAuctionNameSearch() != null) {
+//            spec = spec.and(AuctionSpecification.auctionNameContains(auctionRequestDTO.getAuctionNameSearch()));
+//        }
+//        if (auctionRequestDTO.getPriceFrom() != null) {
+//            spec = spec.and(AuctionSpecification.priceGreaterThanOrEqual(auctionRequestDTO.getPriceFrom()));
+//        }
+//        if (auctionRequestDTO.getPriceTo() != null) {
+//            spec = spec.and(AuctionSpecification.priceLessThanOrEqual(auctionRequestDTO.getPriceTo()));
+//        }
+//        if (auctionRequestDTO.getProviderId() != null) {
+//            spec = spec.and(AuctionSpecification.providerIdEquals(auctionRequestDTO.getProviderId()));
+//        }
+//        if (auctionRequestDTO.getAuctionCategorySearch() != null) {
+//            spec = spec.and(AuctionSpecification.auctionNameContains(auctionRequestDTO.getAuctionCategorySearch()));
+//        }
 
-        return auctionRepository.findAll(spec, pageRequest);
+        return auctionRepository.findAll(pageRequest);
     }
 
 //    public Page<Auction> getAuctionsByProviderId(Long providerId, AuctionProviderRequestDTO auctionProviderRequestDTO) {
@@ -167,11 +167,11 @@ public class AuctionService {
     public Auction activateAuction(Long auctionId) {
         Auction auction = getAuctionById(auctionId);
 
-        // Sprawdź, czy aukcja ma przypisane jakieś przedmioty
-        List<Item> items = itemRepository.findAllByAuction(auction);
-        if (items == null || items.isEmpty()) {
-            throw new IllegalStateException("Cannot activate auction without items.");
-        }
+//        // Sprawdź, czy aukcja ma przypisane jakieś przedmioty
+//        List<Item> items = itemRepository.findAllByAuction(auction);
+//        if (items == null || items.isEmpty()) {
+//            throw new IllegalStateException("Cannot activate auction without items.");
+//        }
 
         // Sprawdź, czy aukcja już nie jest aktywna
         if (auction.getStatusAuction() != StatusAuction.ACTIVE) {
