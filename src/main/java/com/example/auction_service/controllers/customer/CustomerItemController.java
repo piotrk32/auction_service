@@ -3,6 +3,7 @@ package com.example.auction_service.controllers.customer;
 import com.example.auction_service.models.item.dtos.ItemPurchaseDTO;
 import com.example.auction_service.models.item.dtos.ItemRequestDTO;
 import com.example.auction_service.models.item.dtos.ItemResponseDTO;
+import com.example.auction_service.security.services.FineGrainServices;
 import com.example.auction_service.services.customer.CustomerFacade;
 import com.example.auction_service.services.item.ItemFacade;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +30,7 @@ public class CustomerItemController {
 
     private final ItemFacade itemFacade;
     private final CustomerFacade customerFacade;
+    private final FineGrainServices fineGrainServices;
 
 
 
@@ -80,4 +82,31 @@ public class CustomerItemController {
         Page<ItemResponseDTO> itemResponseDTOPage = itemFacade.getItems(itemRequestDTO);
         return new ResponseEntity<>(itemResponseDTOPage, HttpStatus.OK);
     }
+
+    @GetMapping("/customer-items")
+    @Operation(summary = "Show items bought by cutmer", description = "Functionality lets user to show bought items by the customer")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successful retrieval of customer items",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(
+                                    schema = @Schema(implementation = ItemResponseDTO.class)
+                            )
+                    )),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad Request - returns map of errors or ErrorMessage",
+                    content = @Content(
+                            mediaType = "application/json"
+                    ))
+    })
+    public ResponseEntity<Page<ItemResponseDTO>> getCustomerItems(
+            @ModelAttribute @Valid ItemRequestDTO itemRequestDTO) {
+        Long customerId = fineGrainServices.getCurrentUserId();
+        Page<ItemResponseDTO> itemResponseDTOPage = itemFacade.getCustomerItems(itemRequestDTO, customerId);
+        return new ResponseEntity<>(itemResponseDTOPage, HttpStatus.OK);
+    }
+
 }

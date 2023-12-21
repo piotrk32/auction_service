@@ -48,8 +48,14 @@ public class ItemFacade {
         return itemService.getItems(itemRequestDTO).map(ItemMapper::mapToItemResponseDTO);
     }
 
+    public Page<ItemResponseDTO> getCustomerItems(ItemRequestDTO itemRequestDTO, Long customerId) {
+        return itemService.getCustomerItems(itemRequestDTO, customerId)
+                .map(ItemMapper::mapToItemResponseDTO);
+    }
+
+
     // Metoda do przypisania przedmiotu do klienta
-    public void assignItemToCustomer(Long itemId, Long customerId) {
+    public void assignItemToCustomer(Long itemId, Long  customerId) {
         itemService.assignItemToCustomer(itemId, customerId);
     }
 

@@ -1,7 +1,6 @@
 package com.example.auction_service.services.item;
 
 import com.example.auction_service.exceptions.EntityNotFoundException;
-import com.example.auction_service.exceptions.auction.InvalidCurrencyException;
 import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.customer.Customer;
 import com.example.auction_service.models.item.Item;
@@ -196,6 +195,41 @@ public class ItemService {
 
         // Pass the pageRequest object to the repository method
         return itemRepository.findAllByProviderId(providerId, pageRequest);
+    }
+
+    public Page<Item> getCustomerItems(ItemRequestDTO itemRequestDTO, Long customerId) {
+        PageRequest pageRequest = PageRequest.of(
+                Integer.parseInt(itemRequestDTO.getPage()),
+                Integer.parseInt(itemRequestDTO.getSize()),
+                Sort.Direction.fromString(itemRequestDTO.getDirection()),
+                itemRequestDTO.getSortParam());
+
+        Specification<Item> spec = Specification.where(null);
+
+        if (itemRequestDTO.getItemNameSearch() != null) {
+            spec = spec.and(ItemSpecification.itemNameContains(itemRequestDTO.getItemNameSearch()));
+        }
+        if (itemRequestDTO.getItemCategorySearch() != null) {
+            spec = spec.and(ItemSpecification.itemCategoryContains(itemRequestDTO.getItemCategorySearch()));
+        }
+        if (itemRequestDTO.getPriceFrom() != null) {
+            spec = spec.and(ItemSpecification.priceGreaterThanOrEqual(Double.parseDouble(itemRequestDTO.getPriceFrom())));
+        }
+        if (itemRequestDTO.getPriceTo() != null) {
+            spec = spec.and(ItemSpecification.priceLessThanOrEqual(Double.parseDouble(itemRequestDTO.getPriceTo())));
+        }
+        if (itemRequestDTO.getIsBuyNowActive() != null) {
+            spec = spec.and(ItemSpecification.isBuyNowActive(itemRequestDTO.getIsBuyNowActive()));
+        }
+        if (itemRequestDTO.getIsSold() != null) {
+            spec = spec.and(ItemSpecification.isSold(itemRequestDTO.getIsSold()));
+        }
+        if (customerId != null) {
+            spec = spec.and(ItemSpecification.customerOwns(customerId));
+        }
+
+
+        return itemRepository.findAll(spec, pageRequest);
     }
 
 }

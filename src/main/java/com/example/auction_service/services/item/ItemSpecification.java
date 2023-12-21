@@ -58,4 +58,7 @@ public class ItemSpecification {
             return criteriaBuilder.equal(root.get("isSold"), isSold);
         };
     }
+    public static Specification<Item> customerOwns(Long customerId) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("customer").get("id"), customerId);
+    }
 }

@@ -21,8 +21,8 @@ public class ItemRequestDTO {
     @Min(value = 1, message = "Page size must be at least one.")
     private String size = "10";
 
-    @Schema(example = "price")
-    private String sortParam = "price";
+    @Schema(example = "startingPrice")
+    private String sortParam = "startingPrice";
 
     @Schema(example = "DESC")
     private String direction = "ASC";
@@ -48,4 +48,5 @@ public class ItemRequestDTO {
 
     @Schema(example = "false")
     private Boolean isSold = null;
+
 }
