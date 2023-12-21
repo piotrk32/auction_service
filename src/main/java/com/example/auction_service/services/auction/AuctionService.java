@@ -6,15 +6,20 @@ import com.example.auction_service.models.auction.Auction;
 import com.example.auction_service.models.auction.dtos.AuctionInputDTO;
 import com.example.auction_service.models.auction.dtos.AuctionProviderRequestDTO;
 import com.example.auction_service.models.auction.dtos.AuctionRequestDTO;
+import com.example.auction_service.models.auction.dtos.WonAuctionRequestDTO;
 import com.example.auction_service.models.auction.enums.Currency;
 import com.example.auction_service.models.auction.enums.StatusAuction;
+import com.example.auction_service.models.bid.Bid;
 import com.example.auction_service.models.item.Item;
 import com.example.auction_service.models.provider.Provider;
 import com.example.auction_service.repositories.AuctionRepository;
 import com.example.auction_service.repositories.ItemRepository;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -231,6 +236,34 @@ public class AuctionService {
         }
         return auction;
     }
+    public Page<Auction> getWonAuctionsByCustomer(WonAuctionRequestDTO wonAuctionRequestDTO, Long customerId) {
+        PageRequest pageRequest = PageRequest.of(
+                Integer.parseInt(wonAuctionRequestDTO.getPage()),
+                Integer.parseInt(wonAuctionRequestDTO.getSize()),
+                wonAuctionRequestDTO.getDirection(),
+                wonAuctionRequestDTO.getSortParam());
+
+        // Zdefiniowanie specyfikacji dla wygranych aukcji
+        Specification<Auction> spec = Specification.where((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("statusAuction"), StatusAuction.FINISHED));
+
+
+        // Filtruj tylko aukcje, w których użytkownik ma ofertę z flagą isWinning ustawioną na true
+        spec = spec.and((root, query, criteriaBuilder) -> {
+            Subquery<Long> winningBidSubquery = query.subquery(Long.class);
+            Root<Bid> bidRoot = winningBidSubquery.from(Bid.class);
+            winningBidSubquery.select(bidRoot.get("auction").get("id"))
+                    .where(criteriaBuilder.and(
+                            criteriaBuilder.equal(bidRoot.get("customer").get("id"), customerId),
+                            criteriaBuilder.isTrue(bidRoot.get("isWinning"))
+                    ));
+            return criteriaBuilder.in(root.get("id")).value(winningBidSubquery);
+        });
+
+        return auctionRepository.findAll(spec, pageRequest);
+    }
+
+
 
 
 

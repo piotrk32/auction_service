@@ -6,6 +6,7 @@ import com.example.auction_service.models.provider.Provider;
 import com.example.auction_service.services.provider.ProviderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -58,6 +59,12 @@ public class AuctionFacade {
     public AuctionResponseDTO assignItemsToAuction(Long auctionId, List<Long> itemIds) {
         Auction auction = auctionService.assignItemsToAuction(auctionId, itemIds);
         return mapToAuctionResponseDTO(auction);
+    }
+
+    public Page<AuctionResponseDTO> getWonAuctions(WonAuctionRequestDTO wonAuctionRequestDTO, Long customerId) {
+        // Logika przekazania danych z DTO do serwisu i z powrotem
+        return auctionService.getWonAuctionsByCustomer(wonAuctionRequestDTO, customerId)
+                .map(AuctionMapper::mapToAuctionResponseDTO);
     }
 
 }
