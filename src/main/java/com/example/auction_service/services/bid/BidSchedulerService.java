@@ -21,7 +21,7 @@ public class BidSchedulerService {
     @Autowired
     private BidRepository bidRepository;
 
-    @Scheduled(fixedRate = 600000) // Uruchamia co 10 minut
+    @Scheduled(fixedRate = 60000) // Uruchamia co 10 minut
     public void updateWinningBidStatus() {
         // Pobierz wszystkie aktywne aukcje
         List<Auction> activeAuctions = auctionRepository.findAllByStatusAuction(StatusAuction.ACTIVE);
