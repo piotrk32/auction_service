@@ -18,7 +18,6 @@ This repository contains the backend part of the Auction Service project, which 
 - User authentication and authorization with OAuth2
 - CRUD operations for auction items
 - Real-time bidding system
-- Secure transaction handling
 - Data validation and error handling
 - Logging and monitoring
 
