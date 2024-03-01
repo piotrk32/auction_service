@@ -11,7 +11,7 @@ This repository contains the backend part of the Auction Service project, which 
 - Spring Security with OAuth2 for authentication
 - JPA/Hibernate for database interaction
 - PostgreSQL as the relational database
-- Maven for project management and build automation
+- Gradle for project management and build automation
 
 ## Features
 
